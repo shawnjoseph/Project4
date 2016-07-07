@@ -4,22 +4,24 @@ using namespace std;
 
 const int MAX_ID = 1000;
 
-template <class Type> class Vertex {
+template <class Key, class Value> class Vertex {
 private:
-    string key;
-    Type value;
-    int id = 0;
-
+    Key key;
+    Value value;
 public:
+    int id = 0;
+    Vertex *next;
     Vertex()
     {
         id = ++id;
+        next = nullptr;
     }
 
-    Vertex(string key, Type value){
+    Vertex(Key key, Value value){
         this->key = key;
         this->value = value;
         id = ++id;
+        next = nullptr;
     }
 
     int getID(){
@@ -33,12 +35,11 @@ public:
         return this->key;
     }
 
-    void setValue(Type & value){
+    void setValue(Value & value){
         this->value = value;
     }
-    Type & getValue(){
+    Value & getValue(){
         return this->value;
     }
-
 };
 
