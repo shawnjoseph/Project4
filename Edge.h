@@ -1,36 +1,45 @@
+#pragma once
 #include "Vertex.h"
 
-class Edge {
+template <class Name, class Data> class Vertex;
+
+class Edge  {
 private:
-    int weight;
-    Vertex *begin;
-    Vertex *end;
+    double weight;
+    Vertex<class Name, class Data> *begin;
+    Vertex<class Name, class Data> *end;
 
 public:
-    Edge(Vertex *begin, Vertex *end, int weight){
+    Edge(Vertex<class Name, class Data> *begin, Vertex<class Name, class Data> *end, int weight){
         this->begin = begin;
         this->end = end;
         this->weight = weight;
     }
 
-    Edge(Vertex *begin, Vertex *end){
+    Edge(Vertex <Name, Data> *begin, Vertex<Name, Data> *end){
         this->begin = begin;
         this->end = end;
     }
 
-    Vertex * getBeginning(){
+    ~Edge(){
+        this->begin = nullptr;
+        this->end = nullptr;
+        this->weight = 0;
+    }
+
+    Vertex<class Name, class Data> * getBeginning(){
         return this->begin;
     }
 
-    Vertex * getEnd(){
+    Vertex<class Name, class Data>* getEnd(){
         return this->end;
     }
 
-    int getWeight(){
+    double getWeight(){
         return this->weight;
     }
 
-    void  setWeight(int weight){
+    void  setWeight(double weight){
         this->weight = weight;
     }
 };

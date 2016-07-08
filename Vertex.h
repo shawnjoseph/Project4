@@ -1,13 +1,15 @@
+#pragma once
 #include <iostream>
 #include <string>
+#include "Edge.h"
 using namespace std;
 
 const int MAX_ID = 1000;
 
-template <class Key, class Value> class Vertex {
+template <class Name, class Data> class Vertex {
 private:
-    Key key;
-    Value value;
+    Name name;
+    Data data;
 public:
     int id = 0;
     Vertex *next;
@@ -17,9 +19,9 @@ public:
         next = nullptr;
     }
 
-    Vertex(Key key, Value value){
-        this->key = key;
-        this->value = value;
+    Vertex(Name key, Data value){
+        this->name = key;
+        this->data = value;
         id = ++id;
         next = nullptr;
     }
@@ -28,18 +30,20 @@ public:
         return id;
     }
 
-    void setKey(string key){
-        this->key = key;
+    void setName(string name){
+        this->name = name;
     }
-    string getKey(){
-        return this->key;
+    string getName(){
+        return this->name;
     }
 
-    void setValue(Value & value){
-        this->value = value;
+    void setData(Data & data){
+        this->data = data;
     }
-    Value & getValue(){
-        return this->value;
+    Data & getData(){
+        return this->data;
+    }
+
+    void addEdge(Vertex &v, Vertex &u){
     }
 };
-

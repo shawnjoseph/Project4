@@ -3,19 +3,18 @@
 
 using namespace std;
 
-template<class Key, class Value>
-class HashTable {
+template<class Key, class Value> class HashTable {
     friend class Graph;
 protected:
     // To be filled in later
     int tableSize;
-    int numOfEntries;
     double loadFactor;
     const double THRESHOLD = 0.3;
     Key hashResult;
     Vertex<Key, Value> **table;
 
 public:
+    int numOfEntries;
 
     HashTable() {
         tableSize = 20;
@@ -43,8 +42,8 @@ public:
     }
 
 
-    Value *search(Key query) {
-        // Searches for a value in the hashmap
+    Vertex<Name, Data> *search(Key query) {
+        // Searches for a data in the hashmap
         int intKey = 0;
         for (int i = 0; i < query.length(); i++) {
             intKey += query[i];
@@ -66,10 +65,10 @@ public:
 
         for (int i = 0; i < tableSize; i++) {
             if (table[i] != NULL) {
-                if (table[i]->getKey() == hashResult) {
+                if (table[i]->getName() == hashResult) {
                     // If a result is found
                     if ((table[i]->next) != NULL) {
-                        // Means that there is more than one value there
+                        // Means that there is more than one data there
                         Vertex<Key, Value> *ptr = table[i];
                         int arraySize = 0;
                         while (ptr != NULL) {
@@ -81,15 +80,15 @@ public:
                         ptr = table[i];
                         cout << "List of results: " << endl;
                         for (int j = 0; j < arraySize; j++) {
-                            result[j] = ptr->getValue();
+                            result[j] = ptr->getData();
                             ptr = ptr->next;
                             cout << result[j] << endl;
                         }
                         return result;
                     } else {
-                        // Means there's only one value there
+                        // Means there's only one data there
                         Value *result = new Value[1];
-                        result[0] = table[i]->getValue();
+                        result[0] = table[i]->getData();
                         cout << "List of results: " << endl;
                         cout << result[0] << endl;
                         return result;
@@ -103,9 +102,9 @@ public:
     }
 
     void insertValue(Key key, Value value) {
-        // Boolean to track whether the for loop found any value
+        // Boolean to track whether the for loop found any data
         bool blankInsert = true;
-        // Inserts a value into the hashmap
+        // Inserts a data into the hashmap
         loadFactor = numOfEntries / (double) tableSize;
         int intKey = 0;
         for (int i = 0; i < key.length(); i++) {
@@ -114,10 +113,10 @@ public:
         hashResult = to_string((intKey * 1000) % 31);
         for (int i = 0; i < tableSize; i++) {
             if (table[i] != NULL) {
-                if (table[i]->getKey() == hashResult) {
+                if (table[i]->getName() == hashResult) {
                     blankInsert = false;
                     if (table[i]->next != NULL) {
-                        // Means there's already a value in there,
+                        // Means there's already a data in there,
                         // must implement chaining
                         Vertex<Key, Value> *ptr = table[i];
                         while (ptr->next != NULL) {
@@ -132,7 +131,7 @@ public:
             }
         }
         if (blankInsert) {
-            // No key value matches, creating new space
+            // No key data matches, creating new space
             numOfEntries++;
             table[numOfEntries - 1] = new Vertex<Key, Value>(hashResult, value);
         }
@@ -152,15 +151,15 @@ public:
     }
 
     void deleteValue(Key key) {
-        // Deletes a value from the hashmap
+        // Deletes a data from the hashmap
         bool found = false;
         hashResult = hash<Key>()(key);
         for (int i = 0; i < numOfEntries; i++) {
             if (table[i] != NULL) {
-                if (table[i]->getKey() == hashResult) {
+                if (table[i]->getName() == hashResult) {
                     found = true;
                     if (table[i]->next != NULL) {
-                        // There's more than one value
+                        // There's more than one data
                         Vertex<Key, Value> *temp = table[i];
                         while (temp->next != NULL) {
                             Vertex<Key, Value> *toDelete = temp;
@@ -187,35 +186,37 @@ public:
         if(found) {
             numOfEntries--;
         } else {
-            cout << "Key value was not found" << endl;
+            cout << "Key data was not found" << endl;
         }
     }
+
+//    void addEdge(Vertex &v, Vertex &u, double weight){
+//    }
 
     void print() {
         int counter = 1;
         for (int i = 0; i < numOfEntries; i++) {
             if (table[i] != NULL) {
                 if(table[i]->next != NULL) {
-                    // More than one value
+                    // More than one data
                     Vertex<Key, Value> *ptr = table[i];
                     while(ptr != NULL) {
                         cout << "Item number: " << counter << endl;
-                        cout << "Key: " << ptr->getKey() << endl;
-                        cout << "Value: " << ptr->getValue() << endl;
+                        cout << "Name: " << ptr->getName() << endl;
+                        cout << "Data: " << ptr->getData() << endl;
                         ptr = ptr->next;
                         counter++;
                     }
                 } else {
                     cout << "Item number: " << counter << endl;
-                    cout << "Key: " << table[i]->getKey() << endl;
-                    cout << "Value: " << table[i]->getValue() << endl;
+                    cout << "Key: " << table[i]->getName() << endl;
+                    cout << "Value: " << table[i]->getData() << endl;
                     counter++;
                 }
             } else {
-                cout << "Null value" << endl;
+                cout << "Null data" << endl;
             }
 
         }
     }
 };
-

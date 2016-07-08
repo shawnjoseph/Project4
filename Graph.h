@@ -1,4 +1,6 @@
+#pragma once
 #include <iostream>
+#include <limits>
 #include "Vertex.h"
 #include "Edge.h"
 #include "HashTable.h"
@@ -17,8 +19,29 @@ public:
     ~Graph(){
         graph->~HashTable();
     }
-    bool empty(){ graph->numOfEntries == 0 ? cout << "Graph is empty." : "Graph is not empty."; }
-    int degree(string v){
-        graph->search(v);
+    bool empty(){
+        if(graph->numOfEntries == 0){
+            cout << "Graph is empty." << endl;
+        }
+        else{
+            cout << "Graph is not empty." << endl;
+        }
+        return graph->numOfEntries == 0;
+    }
+    void buildGraph(){
+
+    }
+    void insert(string u, string v, double w){
+        if(w > 0 || w == numeric_limits::infinity()){
+            cerr << "Weight is invalid." << endl;
+        }
+        else if ( w == 0){
+            Vertex<Name,Data> * U;
+            Vertex<Name, Data> * V;
+            U = graph->search(u);
+            V = graph->search(v);
+
+
+        }
     }
 };
