@@ -3,22 +3,22 @@
 
 using namespace std;
 
-template<class Key, class Value> class HashTable {
-    friend class Graph;
+template<class Data> class HashTable {
+    template <class Type> friend class Graph;
 protected:
     // To be filled in later
     int tableSize;
     double loadFactor;
     const double THRESHOLD = 0.3;
-    Key hashResult;
-    Vertex<Key, Value> **table;
+    string hashResult;
+    Vertex<Data> **table;
 
 public:
     int numOfEntries;
 
     HashTable() {
         tableSize = 20;
-        table = new Vertex<Key, Value> *[tableSize];
+        table = new Vertex<Data> *[tableSize];
         numOfEntries = 0;
         // Set all values to NULL as default
         for (int i = 0; i < tableSize; i++) {
@@ -29,11 +29,11 @@ public:
     ~HashTable() {
         for(int i=0; i < numOfEntries; i++) {
             if(table[i]->next != NULL) {
-                Vertex<Key, Value> *ptr = table[i];
+                Vertex<Data> *ptr = table[i];
                 while(ptr != NULL) {
-                    Vertex<Key, Value> *temp = ptr;
+                    Vertex<Data> *temp = ptr;
                     ptr = ptr->next;
-                    delete *temp;
+                    delete temp;
                 }
             } else {
                 delete table[i];
@@ -42,7 +42,7 @@ public:
     }
 
 
-    Vertex<Name, Data> *search(Key query) {
+    Vertex<Data> *search(string query) {
         // Searches for a data in the hashmap
         int intKey = 0;
         for (int i = 0; i < query.length(); i++) {
@@ -69,14 +69,14 @@ public:
                     // If a result is found
                     if ((table[i]->next) != NULL) {
                         // Means that there is more than one data there
-                        Vertex<Key, Value> *ptr = table[i];
+                        Vertex<Data> *ptr = table[i];
                         int arraySize = 0;
                         while (ptr != NULL) {
                             // Figuring out the size array should be
                             arraySize++;
                             ptr = ptr->next;
                         }
-                        Value *result = new Value[arraySize];
+                        Data *result = new Data[arraySize];
                         ptr = table[i];
                         cout << "List of results: " << endl;
                         for (int j = 0; j < arraySize; j++) {
@@ -87,7 +87,7 @@ public:
                         return result;
                     } else {
                         // Means there's only one data there
-                        Value *result = new Value[1];
+                        Data *result = new Data[1];
                         result[0] = table[i]->getData();
                         cout << "List of results: " << endl;
                         cout << result[0] << endl;
@@ -101,14 +101,14 @@ public:
         return NULL;
     }
 
-    void insertValue(Key key, Value value) {
+    void insertValue(string name, Data data) {
         // Boolean to track whether the for loop found any data
         bool blankInsert = true;
         // Inserts a data into the hashmap
         loadFactor = numOfEntries / (double) tableSize;
         int intKey = 0;
-        for (int i = 0; i < key.length(); i++) {
-            intKey += key[i];
+        for (int i = 0; i < name.length(); i++) {
+            intKey += name[i];
         }
         hashResult = to_string((intKey * 1000) % 31);
         for (int i = 0; i < tableSize; i++) {
@@ -118,14 +118,14 @@ public:
                     if (table[i]->next != NULL) {
                         // Means there's already a data in there,
                         // must implement chaining
-                        Vertex<Key, Value> *ptr = table[i];
+                        Vertex<Data> *ptr = table[i];
                         while (ptr->next != NULL) {
                             // Just setting ptr to the last node
                             ptr = ptr->next;
                         }
-                        ptr->next = new Vertex<Key, Value>(hashResult, value);
+                        ptr->next = new Vertex<Data>(hashResult, data);
                     } else {
-                        table[i]->next = new Vertex<Key, Value>(hashResult, value);
+                        table[i]->next = new Vertex<Data>(hashResult, data);
                     }
                 }
             }
@@ -133,15 +133,15 @@ public:
         if (blankInsert) {
             // No key data matches, creating new space
             numOfEntries++;
-            table[numOfEntries - 1] = new Vertex<Key, Value>(hashResult, value);
+            table[numOfEntries - 1] = new Vertex<Data>(hashResult, data);
         }
         // Checking to see if need to increase size of HashMap
         if (loadFactor > THRESHOLD) {
             int oldTableSize = tableSize;
             tableSize *= 2;
 //            cout << "Resizing array to " << tableSize << endl;
-            Vertex<Key, Value> **temp = table;
-            table = new Vertex<Key, Value> *[tableSize];
+            Vertex<Data> **temp = table;
+            table = new Vertex<Data> *[tableSize];
             for (int i = 0; i < oldTableSize; i++) {
                 table[i] = temp[i];
             }
@@ -150,19 +150,19 @@ public:
 
     }
 
-    void deleteValue(Key key) {
+    void deleteValue(string name) {
         // Deletes a data from the hashmap
         bool found = false;
-        hashResult = hash<Key>()(key);
+        hashResult = hash<string>()(name);
         for (int i = 0; i < numOfEntries; i++) {
             if (table[i] != NULL) {
                 if (table[i]->getName() == hashResult) {
                     found = true;
                     if (table[i]->next != NULL) {
                         // There's more than one data
-                        Vertex<Key, Value> *temp = table[i];
+                        Vertex<Data> *temp = table[i];
                         while (temp->next != NULL) {
-                            Vertex<Key, Value> *toDelete = temp;
+                            Vertex<Data> *toDelete = temp;
                             temp = temp->next;
                             delete (toDelete);
                         }
@@ -172,7 +172,7 @@ public:
                         }
                     } else {
                         // Only one element in there
-                        Vertex<Key, Value> *temp = table[i];
+                        Vertex<Data> *temp = table[i];
                         for (int j = i + 1; j < numOfEntries; j++) {
                             *table[i] = *table[j];
                             table[numOfEntries-1] = NULL;
@@ -199,7 +199,7 @@ public:
             if (table[i] != NULL) {
                 if(table[i]->next != NULL) {
                     // More than one data
-                    Vertex<Key, Value> *ptr = table[i];
+                    Vertex<Data> *ptr = table[i];
                     while(ptr != NULL) {
                         cout << "Item number: " << counter << endl;
                         cout << "Name: " << ptr->getName() << endl;
@@ -210,7 +210,7 @@ public:
                 } else {
                     cout << "Item number: " << counter << endl;
                     cout << "Key: " << table[i]->getName() << endl;
-                    cout << "Value: " << table[i]->getData() << endl;
+                    cout << "Data: " << table[i]->getData() << endl;
                     counter++;
                 }
             } else {

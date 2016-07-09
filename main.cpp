@@ -1,11 +1,12 @@
 #include <iostream>
-//#include "Graph.h"
+#include "Graph.h"
 using namespace std;
 
 int main() {
 
-//    Graph<string> * graph = new Graph<string>();
-//    graph->empty();
+    Graph<double> * graph = new Graph<double>();
+    graph->empty();
+    graph->buildGraph();
     cout << "Let's Get Down To Business" << endl;
     return 0;
 }

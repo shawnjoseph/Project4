@@ -1,22 +1,22 @@
 #pragma once
 #include "Vertex.h"
 
-template <class Name, class Data> class Vertex;
+template <class Data> class Vertex;
 
 class Edge  {
 private:
     double weight;
-    Vertex<class Name, class Data> *begin;
-    Vertex<class Name, class Data> *end;
+    Vertex<class Data> *begin;
+    Vertex<class Data> *end;
 
 public:
-    Edge(Vertex<class Name, class Data> *begin, Vertex<class Name, class Data> *end, int weight){
+    Edge(Vertex<class Data> *begin, Vertex<class Data> *end, int weight){
         this->begin = begin;
         this->end = end;
         this->weight = weight;
     }
 
-    Edge(Vertex <Name, Data> *begin, Vertex<Name, Data> *end){
+    Edge(Vertex<Data> *begin, Vertex<Data> *end){
         this->begin = begin;
         this->end = end;
     }
@@ -27,11 +27,11 @@ public:
         this->weight = 0;
     }
 
-    Vertex<class Name, class Data> * getBeginning(){
+    Vertex<class Data> * getBeginning(){
         return this->begin;
     }
 
-    Vertex<class Name, class Data>* getEnd(){
+    Vertex<class Data>* getEnd(){
         return this->end;
     }
 

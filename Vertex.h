@@ -6,24 +6,34 @@ using namespace std;
 
 const int MAX_ID = 1000;
 
-template <class Name, class Data> class Vertex {
+template <class Data> class Vertex {
 private:
-    Name name;
+    string name;
     Data data;
 public:
     int id = 0;
     Vertex *next;
     Vertex()
     {
-        id = ++id;
-        next = nullptr;
+        if(id >= MAX_ID){
+            cerr << "Max ID reached." << endl;
+        }
+        else{
+            id = ++id;
+            next = nullptr;
+        }
     }
 
-    Vertex(Name key, Data value){
-        this->name = key;
-        this->data = value;
-        id = ++id;
-        next = nullptr;
+    Vertex(string name, Data data){
+        if(id >= MAX_ID){
+            cerr << "Max ID reached." << endl;
+        }
+        else {
+            this->name = name;
+            this->data = data;
+            id = ++id;
+            next = nullptr;
+        }
     }
 
     int getID(){
