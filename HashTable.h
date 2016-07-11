@@ -190,9 +190,6 @@ public:
         }
     }
 
-//    void addEdge(Vertex &v, Vertex &u, double weight){
-//    }
-
     void print() {
         int counter = 1;
         for (int i = 0; i < numOfEntries; i++) {

@@ -5,5 +5,5 @@ using namespace std;
 
 template <class data> class AdjacencyList {
 public:
-    Vertex<data> **head;
+    Vertex<data> *head;
 };

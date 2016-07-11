@@ -10,28 +10,29 @@ template <class Data> class Vertex {
 private:
     string name;
     Data data;
-public:
     int id = 0;
+public:
     Vertex *next;
-    Vertex()
+    Vertex<Data>()
     {
         if(id >= MAX_ID){
             cerr << "Max ID reached." << endl;
         }
         else{
-            id = ++id;
+            id = generateID();
             next = nullptr;
         }
     }
 
-    Vertex(string name, Data data){
+    Vertex<Data>(string name, Data data)
+    {
         if(id >= MAX_ID){
             cerr << "Max ID reached." << endl;
         }
         else {
+            id = generateID();
             this->name = name;
             this->data = data;
-            id = ++id;
             next = nullptr;
         }
     }
@@ -43,6 +44,7 @@ public:
     void setName(string name){
         this->name = name;
     }
+
     string getName(){
         return this->name;
     }
@@ -50,10 +52,14 @@ public:
     void setData(Data & data){
         this->data = data;
     }
+
     Data & getData(){
         return this->data;
     }
 
-    void addEdge(Vertex &v, Vertex &u){
+    int generateID(){
+        static int newID = 0;
+
+        return newID = ++newID;
     }
 };

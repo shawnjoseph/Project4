@@ -20,6 +20,7 @@ public:
     Graph<Type>(){
         graph = new HashTable<Type>();
         arr = new AdjacencyList<Type>[MIN];
+        // Set all values to NULL as default
         for(int i = 0; i < MIN; i++){
             arr[i].head = NULL;
         }
@@ -52,22 +53,27 @@ public:
         }
 
         while(file){
-            file >> name >> data;
-            cout << name << " " << data << endl;
-            graph->insertValue(name,data); //insertion into HashTable
-//            arr->head[i] = new Vertex<double>(name,data); //insertion into Adjacency List
-            i++;
+            if(file.eof()){ break; }
+            else{
+                file >> name >> data;
+                graph->insertValue(name,data); //insertion into HashTable
+                arr[i].head = new Vertex<Type>(name,data); //insertion  into Adjacency List
+                cout << "ID: " << arr[i].head->getID() << " Name: " << arr[i].head->getName()
+                        << " Data: " << arr[i].head->getData() << endl;
+                i++;
+            }
+
         }
     }
-    void insert(string u, string v, double w){
-        if(w > 0 || w == numeric_limits<double>::infinity()){
-            cerr << "Weight is invalid." << endl;
-        }
-        else if ( w == 0){
-            Vertex<Data> * U;
-            Vertex<Data> * V;
-            U = graph->search(u);
-            V = graph->search(v);
-        }
-    }
+//    void insert(string u, string v, double w){
+//        if(w > 0 || w == numeric_limits<double>::infinity()){
+//            cerr << "Weight is invalid." << endl;
+//        }
+//        else if ( w == 0){
+//            Vertex<Data> * U;
+//            Vertex<Data> * V;
+////            U = graph->search(u);
+////            V = graph->search(v);
+//        }
+//    }
 };
