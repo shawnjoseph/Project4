@@ -49,7 +49,7 @@ public:
         return this->name;
     }
 
-    void setData(Data & data){
+    void setData(Data data){
         this->data = data;
     }
 

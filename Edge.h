@@ -10,7 +10,7 @@ private:
     Vertex<class Data> *end;
 
 public:
-    Edge(Vertex<class Data> *begin, Vertex<class Data> *end, int weight){
+    Edge(Vertex<class Data> *begin, Vertex<class Data> *end, double weight){
         this->begin = begin;
         this->end = end;
         this->weight = weight;

@@ -15,4 +15,3 @@ Norway 11
 Singapore 1
 Belgium 6
 Russia 1
-United_States 310
