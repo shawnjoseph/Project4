@@ -8,6 +8,7 @@ using namespace std;
 class AdjacencyListNode {
 private:
     string name;
+    double data;
 
 public:
     AdjacencyListNode *next;
@@ -19,7 +20,11 @@ public:
 
     string getName() const { return name; }
 
+    double getData() const { return data; }
+
     void setName(string name) { this->name = name; }
+
+    void setData(double data) { this->data = data; }
 
     AdjacencyListNode *getNext() const { return next; };
 

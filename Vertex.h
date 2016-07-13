@@ -14,7 +14,6 @@ private:
     Data data;
     int id = 0;
 public:
-    AdjacencyListNode *end;
     Vertex *next;
     Vertex<Data>()
     {

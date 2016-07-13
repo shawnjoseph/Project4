@@ -58,10 +58,8 @@ public:
         while(file >> name >> data){
             graph->insertValue(name,data); //insertion into HashTable
             arr[i].head->setName(name); //insertion into AdjacencyList
-//            arr[i].head->setData(data); //insertion into AdjacencyList
-//                cout << "ID: " << arr[i].head->getID() << " Name: " << arr[i].head->getName()
-//                        << " Data: " << arr[i].head->getData() << endl;
-                i++;
+            arr[i].head->setData(data); //insertion into AdjacencyList
+            i++;
         }
         file.close();
         file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
@@ -72,12 +70,15 @@ public:
             cerr << "File could not be opened." << endl;
         }
         while(file >> name >> name2 >> data){
-//            cout << name << " " << name2 << " " << data << endl;
-            //Add edge
-            insert(name, name2, data);
+            insert(name, name2, data);            //Add edge and creates AdjacencyList
         }
+        file.close();
     }
+
+    //Add edge and creates AdjacencyList
     void insert(string u, string v, double w){
+        Vertex<Data> *vertex1;
+        Vertex<Data> *vertex2;
         static int numEdges = 0;
         if(w <= 0 || w == numeric_limits<double>::infinity()){
             cerr << "Weight is invalid." << endl;
@@ -93,24 +94,17 @@ public:
             }
             AdjacencyListNode *ptr = arr[i].head->next;
             if (ptr == NULL) {
-                arr[i].head->next = new AdjacencyListNode(arr[j].head->getName(), nullptr);
+                arr[i].head->next = new AdjacencyListNode(arr[j].head->getName(), nullptr); //creates first nodes
             }
             else {
                 while (ptr != NULL) {
                     ptr = ptr->next;
                 }
-                ptr = new AdjacencyListNode(arr[j].head->getName(), nullptr);
-                cout << ptr->getName() << endl;
+                ptr = new AdjacencyListNode(arr[j].head->getName(), nullptr); //creates all other nodes
             }
-
-
-
-//            Edge(arr[i].head, arr[j].head, w);
-//            Vertex<Data> * U;
-//            Vertex<Data> * V;
-//            U = graph->search(u);
-//            V = graph->search(v);
-//            Edge(U,V,w);
+//            vertex1 = new Vertex(arr[i].head->getName(), arr[i].head->getData());
+//            vertex2 = new Vertex(arr[j].head->getName(), arr[j].head->getData());
+//            Edge(vertex1, vertex2, w);
             numEdges++;
         }
     }
