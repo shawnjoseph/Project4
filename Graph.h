@@ -13,7 +13,6 @@ const int MIN = 20;
 template <class Type> class Graph {
 private:
     HashTable<Type> * graph;
-    static int numEdges = 0;
     AdjacencyList<Type> * arr;
 
 public:
@@ -24,7 +23,6 @@ public:
         // Set all values to NULL as default
         for(int i = 0; i < MIN; i++){
             arr[i].head = new Vertex<Type>();
-            cout << i << " ";
         }
     }
     ~Graph<Type>(){
@@ -56,9 +54,9 @@ public:
         }
 
         while(file >> name >> data){
-                graph->insertValue(name,data); //insertion into HashTable
-                arr[i].head->setName(name); //insertion into AdjacencyList
-                arr[i].head->setData(data); //insertion into AdjacencyList
+            graph->insertValue(name,data); //insertion into HashTable
+            arr[i].head->setName(name); //insertion into AdjacencyList
+            arr[i].head->setData(data); //insertion into AdjacencyList
 //                cout << "ID: " << arr[i].head->getID() << " Name: " << arr[i].head->getName()
 //                        << " Data: " << arr[i].head->getData() << endl;
                 i++;
@@ -72,21 +70,41 @@ public:
             cerr << "File could not be opened." << endl;
         }
         while(file >> name >> name2 >> data){
-            cout << name << " " << name2 << " " << data << endl;
+//            cout << name << " " << name2 << " " << data << endl;
             //Add edge
             insert(name, name2, data);
         }
     }
     void insert(string u, string v, double w){
-        if(w > 0 && w == numeric_limits<double>::infinity()){
+        static int numEdges = 0;
+        if(w <= 0 || w == numeric_limits<double>::infinity()){
             cerr << "Weight is invalid." << endl;
         }
-        else if ( w == 0){
-            Vertex<Data> * U;
-            Vertex<Data> * V;
-            U = graph->search(u);
-            V = graph->search(v);
-            Edge(U,V,w);
+        else if ( w > 0){
+            int i = 0;
+            int j = 0;
+            while(arr[i].head->getName() != u){
+                i++;
+            }
+            while(arr[j].head->getName() != v){
+                j++;
+            }
+//            Vertex<Type> * ptr = arr[i].head->next;
+//            while(ptr != NULL){
+//                ptr = ptr->next;
+//            }
+//            while(arr[i].head->next != NULL){
+//                arr[i].head->next = arr[i].head->next->next;
+//                cout << "Am I the Infinite loop?" << endl;
+//            }
+            arr[i].head->next = arr[j].head;
+            cout << arr[i].head->getName() << " " << arr[i].head->next->getName() << endl;
+//            Edge(arr[i].head, arr[j].head, w);
+//            Vertex<Data> * U;
+//            Vertex<Data> * V;
+//            U = graph->search(u);
+//            V = graph->search(v);
+//            Edge(U,V,w);
             numEdges++;
         }
     }
