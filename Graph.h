@@ -6,6 +6,8 @@
 #include "Edge.h"
 #include "HashTable.h"
 #include "AdjacencyList.h"
+#include "AdjacencyListNode.h"
+
 using namespace std;
 
 const int MIN = 20;
@@ -13,16 +15,16 @@ const int MIN = 20;
 template <class Type> class Graph {
 private:
     HashTable<Type> * graph;
-    AdjacencyList<Type> * arr;
+    AdjacencyList *arr;
 
 public:
     //Call to graph constructor creates HashTable and AdjacencyList
     Graph<Type>(){
         graph = new HashTable<Type>();
-        arr = new AdjacencyList<Type>[MIN];
+        arr = new AdjacencyList[MIN];
         // Set all values to NULL as default
         for(int i = 0; i < MIN; i++){
-            arr[i].head = new Vertex<Type>();
+            arr[i].head = new AdjacencyListNode(" ", nullptr);
         }
     }
     ~Graph<Type>(){
@@ -56,7 +58,7 @@ public:
         while(file >> name >> data){
             graph->insertValue(name,data); //insertion into HashTable
             arr[i].head->setName(name); //insertion into AdjacencyList
-            arr[i].head->setData(data); //insertion into AdjacencyList
+//            arr[i].head->setData(data); //insertion into AdjacencyList
 //                cout << "ID: " << arr[i].head->getID() << " Name: " << arr[i].head->getName()
 //                        << " Data: " << arr[i].head->getData() << endl;
                 i++;
@@ -83,17 +85,26 @@ public:
         else if ( w > 0){
             int i = 0;
             int j = 0;
-            while(arr[i].head->getName() != u){
+            while (arr[i].head->getName() != u) { //retrieves location of u in AdjacencyList
                 i++;
             }
-            while(arr[j].head->getName() != v){
+            while (arr[j].head->getName() != v) { //retrieves location of v in AdjacencyList
                 j++;
             }
-            while (arr[i].head->next != NULL) {
-                arr[i].head->next = arr[i].head->next->next;
+            AdjacencyListNode *ptr = arr[i].head->next;
+            if (ptr == NULL) {
+                arr[i].head->next = new AdjacencyListNode(arr[j].head->getName(), nullptr);
             }
-            arr[i].head->next = arr[j].head;
-            cout << arr[i].head->getName() << " " << arr[i].head->next->getName() << endl;
+            else {
+                while (ptr != NULL) {
+                    ptr = ptr->next;
+                }
+                ptr = new AdjacencyListNode(arr[j].head->getName(), nullptr);
+                cout << ptr->getName() << endl;
+            }
+
+
+
 //            Edge(arr[i].head, arr[j].head, w);
 //            Vertex<Data> * U;
 //            Vertex<Data> * V;

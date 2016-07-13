@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include "Edge.h"
+#include "AdjacencyListNode.h"
+
 using namespace std;
 
 const int MAX_ID = 1000;
@@ -12,6 +14,7 @@ private:
     Data data;
     int id = 0;
 public:
+    AdjacencyListNode *end;
     Vertex *next;
     Vertex<Data>()
     {

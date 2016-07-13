@@ -1,9 +1,14 @@
+#pragma once
 #include <iostream>
 #include "Vertex.h"
+#include "AdjacencyListNode.h"
 
 using namespace std;
 
-template <class data> class AdjacencyList {
+class AdjacencyListNode;
+
+class AdjacencyList {
 public:
-    Vertex<data> *head;
+    AdjacencyListNode *head;
+
 };
