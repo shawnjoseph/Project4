@@ -16,7 +16,9 @@ template<class Type>
 class Digraph {
 private:
     HashTable<Type> *digraph;
-    static int numEdges = 0;
+    // Is there a reason for numEdges being static?
+    //static int numEdges = 0;
+    int numEdges = 0;
     AdjacencyList<Type> *arr;
 
 public:
@@ -62,8 +64,8 @@ public:
             digraph->insertValue(name, data); //insertion into HashTable
             arr[i].head->setName(name); //insertion into AdjacencyList
             arr[i].head->setData(data); //insertion into AdjacencyList
-                cout << "ID: " << arr[i].head->getID() << " Name: " << arr[i].head->getName()
-                        << " Data: " << arr[i].head->getData() << endl;
+            cout << "ID: " << arr[i].head->getID() << " Name: " << arr[i].head->getName()
+            << " Data: " << arr[i].head->getData() << endl;
             i++;
         }
         file.close();
@@ -78,19 +80,6 @@ public:
             cout << name << " " << name2 << " " << data << endl;
             //Add edge
             insert(name, name2, data);
-        }
-    }
-
-    void insert(string u, string v, double w) {
-        if(w > 0 && w == numeric_limits<double>::infinity()) {
-            cerr << "Weight is invalid." << endl;
-        } else if(w == 0) {
-            Vertex<Data> *U;
-            Vertex<Data> *V;
-            U = digraph->search(u);
-            V = digraph->search(v);
-            Edge(U, V, w);
-            numEdges++;
         }
     }
 
@@ -136,5 +125,18 @@ public:
 
     double distance(string u, string v) {
         return 0;
+    }
+
+    void insert(string u, string v, double w) {
+        if (w > 0 && w == numeric_limits<double>::infinity()) {
+            cerr << "Weight is invalid." << endl;
+        } else if (w == 0) {
+            Vertex<Data> *U;
+            Vertex<Data> *V;
+            U = digraph->search(u);
+            V = digraph->search(v);
+            Edge(U, V, w);
+            numEdges++;
+        }
     }
 };
