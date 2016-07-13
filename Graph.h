@@ -89,14 +89,9 @@ public:
             while(arr[j].head->getName() != v){
                 j++;
             }
-//            Vertex<Type> * ptr = arr[i].head->next;
-//            while(ptr != NULL){
-//                ptr = ptr->next;
-//            }
-//            while(arr[i].head->next != NULL){
-//                arr[i].head->next = arr[i].head->next->next;
-//                cout << "Am I the Infinite loop?" << endl;
-//            }
+            while (arr[i].head->next != NULL) {
+                arr[i].head->next = arr[i].head->next->next;
+            }
             arr[i].head->next = arr[j].head;
             cout << arr[i].head->getName() << " " << arr[i].head->next->getName() << endl;
 //            Edge(arr[i].head, arr[j].head, w);
