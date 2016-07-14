@@ -9,9 +9,10 @@
 #include "AdjacencyList.h"
 #include "AdjacencyListNode.h"
 
+#define MIN 20
+
 using namespace std;
 
-const int MIN = 20;
 
 template<class Type>
 class Digraph {
@@ -19,6 +20,7 @@ private:
     HashTable<Type> *graph;
     AdjacencyList *arr;
     int numEdges = 0;
+    int numNodes = 0;
 
 public:
     //Call to graph constructor creates HashTable and AdjacencyList
@@ -27,7 +29,7 @@ public:
         arr = new AdjacencyList[MIN];
         // Set all values to NULL as default
         for (int i = 0; i < MIN; i++) {
-            arr[i].head = new AdjacencyListNode(" ", nullptr);
+            arr[i].head = new AdjacencyListNode(nullptr, nullptr);
         }
     }
 
@@ -53,76 +55,86 @@ public:
         string name, name2, line;
         double data;
         int i = 0;
+        // Uncomment this when Shawn is working on it.
+        //file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
         file.open("AttackMap.txt");
+
         if (file.is_open()) {
             cout << "File Opened." << endl;
-        } else {
+        }
+        else {
             cerr << "File could not be opened." << endl;
         }
 
         while (file >> name >> data) {
+            Vertex<Data> *v = new Vertex<Data>(name, data);
             graph->insertValue(name, data); //insertion into HashTable
-            arr[i].head->setName(name); //insertion into AdjacencyList
-            arr[i].head->setData(data); //insertion into AdjacencyList
+            arr[i].head = new AdjacencyListNode(v, NULL); //insertion into AdjacencyList
             i++;
+            numNodes++;
         }
-
         file.close();
+
+
+        // Uncomment this when Shawn is working on it.
+        //file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
         file.open("AttackMapEdges.txt");
 
         if (file.is_open()) {
             cout << "File Opened." << endl;
-        } else {
+        }
+        else {
             cerr << "File could not be opened." << endl;
         }
-
         while (file >> name >> name2 >> data) {
+//            cout << "Name: " << name << endl;
+//            cout << "Name 2: " << name2 << endl;
+//            cout << "Data: " << data << endl;
             insert(name, name2, data);            //Add edge and creates AdjacencyList
         }
         file.close();
     }
 
-    //Add edge and creates AdjacencyList
-    void insert(string u, string v, double w) {
-        Vertex<Data> *vertex1;
-        Vertex<Data> *vertex2;
-        if (w <= 0 || w == numeric_limits<double>::infinity()) {
+    void insert(string u, string v, double w){
+        if(w <= 0 || w == numeric_limits<double>::infinity()){
             cerr << "Weight is invalid." << endl;
-        } else if (w > 0) {
+        }
+        else if ( w > 0){
             int i = 0;
             int j = 0;
-            while (arr[i].head->getName() != u) {
-                //retrieves location of u in AdjacencyList
+            while (arr[i].head->getVertex()->getName() != u) { //retrieves location of u in AdjacencyList
                 i++;
             }
-            while (arr[j].head->getName() != v) {
-                //retrieves location of v in AdjacencyList
+            while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
                 j++;
             }
-            AdjacencyListNode *ptr = arr[i].head->next;
-            if (ptr == NULL) {
-                arr[i].head->next = new AdjacencyListNode(arr[j].head->getName(), nullptr); //creates first nodes
-            } else {
-                while (ptr != NULL) {
-                    ptr = ptr->next;
+            if(arr[i].head != NULL) {
+                AdjacencyListNode *ptr = arr[i].head->next;
+                if (ptr == NULL) {
+                    arr[i].head->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates first nodes
                 }
-                ptr = new AdjacencyListNode(arr[j].head->getName(), nullptr); //creates all other nodes
+                else {
+                    while (ptr != NULL) {
+                        ptr = ptr->next;
+                    }
+                    ptr = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates all other nodes
+                }
+                numEdges++;
+            } else {
+                cout << "arr[i].head is NULL, error" << endl;
             }
-//            vertex1 = new Vertex(arr[i].head->getName(), arr[i].head->getData());
-//            vertex2 = new Vertex(arr[j].head->getName(), arr[j].head->getData());
-//            Edge(vertex1, vertex2, w);
-            numEdges++;
         }
     }
+
 
     int indegree(string name) {
         int degree = 0;
         // Change MIN to actual amount in the list later
-        for(int i=0; i < MIN; i++) {
-            if(arr[i] != NULL) {
-                if(arr[i].head->getName() == name) {
+        for (int i = 0; i < MIN; i++) {
+            if (arr[i] != NULL) {
+                if (arr[i].head->getVertex()->getName() == name) {
                     AdjacencyListNode *ptr = arr[i].head;
-                    while(ptr != NULL) {
+                    while (ptr != NULL) {
                         degree++;
                         ptr = ptr->next;
                     }
@@ -135,13 +147,13 @@ public:
     }
 
     double adjacent(string u, string v) {
-        for(int i=0; i < MIN; i++) {
-            if(arr[i] != NULL) {
-                if(arr[i].head->getName() == u) {
+        for (int i = 0; i < MIN; i++) {
+            if (arr[i] != NULL) {
+                if (arr[i].head->getVertex()->getName() == u) {
                     Vertex<Data> *vertex = arr[i].head->getVertex();
-                    if(vertex->getEdges() != NULL) {
-                        for(int j=0; j < vertex->getNumEdges(); j++) {
-                            if(vertex->getEdges()[i]->getEnd()->getName() == v) {
+                    if (vertex->getEdges() != NULL) {
+                        for (int j = 0; j < vertex->getNumEdges(); j++) {
+                            if (vertex->getEdges()[i]->getEnd()->getName() == v) {
                                 return vertex->getEdges()[i]->getWeight();
                             }
                         }
@@ -151,5 +163,17 @@ public:
         }
         cout << "Edge could not be found for the two edges specified" << endl;
         return 0;
+    }
+
+    void display() {
+        for(int i=0; i < numNodes; i++) {
+            cout << "Adjacency List for vertex " << i << endl;
+            AdjacencyListNode *ptr = arr[i].head;
+            while(ptr) {
+                cout << ptr->getVertex()->getName() << " -> ";
+                ptr = ptr->next;
+            }
+            cout << " end" << endl;
+        }
     }
 };

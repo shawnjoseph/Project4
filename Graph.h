@@ -7,10 +7,10 @@
 #include "HashTable.h"
 #include "AdjacencyList.h"
 #include "AdjacencyListNode.h"
+#define MIN 20
 
 using namespace std;
 
-const int MIN = 20;
 
 template<class Type>
 class Graph {
@@ -52,7 +52,10 @@ public:
         string name, name2, line;
         double data;
         int i = 0;
-        file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
+        // Uncomment this when Shawn is working on it.
+        //file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
+        file.open("AttackMap.txt");
+
         if (file.is_open()) {
             cout << "File Opened." << endl;
         }
@@ -68,7 +71,10 @@ public:
             numNodes++;
         }
         file.close();
-        file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
+        // Uncomment this when Shawn is working on it.
+        //file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
+        file.open("AttackMapEdges.txt");
+
         if (file.is_open()) {
             cout << "File Opened." << endl;
         }
@@ -95,19 +101,21 @@ public:
             while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
                 j++;
             }
-            AdjacencyListNode *ptr = arr[i].head->next;
-            if (ptr == NULL) {
-                arr[i].head->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates first nodes
-            }
-            else {
-                while (ptr != NULL) {
-                    ptr = ptr->next;
+            if(arr[i].head != NULL) {
+                AdjacencyListNode *ptr = arr[i].head->next;
+                if (ptr == NULL) {
+                    arr[i].head->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates first nodes
                 }
-                ptr = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates all other nodes
+                else {
+                    while (ptr != NULL) {
+                        ptr = ptr->next;
+                    }
+                    ptr = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates all other nodes
+                }
+                numEdges++;
+            } else {
+                cout << "arr[i].head is NULL, error" << endl;
             }
-
-
-            numEdges++;
         }
     }
 

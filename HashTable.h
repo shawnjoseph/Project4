@@ -1,10 +1,10 @@
+#pragma once
 #include <iostream>
 #include "Vertex.h"
 
 using namespace std;
 
 template<class Data> class HashTable {
-    template <class Type> friend class Digraph;
 protected:
     // To be filled in later
     int tableSize;
