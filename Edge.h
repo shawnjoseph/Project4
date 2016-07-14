@@ -27,11 +27,11 @@ public:
         this->weight = 0;
     }
 
-    Vertex<class Data> * getBeginning(){
+    Vertex<class Data> *getBeginning(){
         return this->origin;
     }
 
-    Vertex<class Data>* getEnd(){
+    Vertex<class Data> *getEnd(){
         return this->destination;
     }
 

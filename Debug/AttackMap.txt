@@ -1,0 +1,17 @@
+United_States 524
+China 227
+Netherlands 116
+Ukraine 32
+Switzerland 17
+India 19
+Czech_Republic 20
+Vietnam 18
+Colombia 1
+United_Arab_Emirates 235
+Spain 12
+France 18
+Philippines 3
+Norway 11
+Singapore 1
+Belgium 6
+Russia 1

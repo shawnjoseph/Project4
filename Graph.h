@@ -12,14 +12,14 @@ using namespace std;
 
 const int MIN = 20;
 
-template <class Type> class Graph {
+template <class Type> class Digraph {
 private:
     HashTable<Type> * graph;
     AdjacencyList *arr;
 
 public:
     //Call to graph constructor creates HashTable and AdjacencyList
-    Graph<Type>(){
+    Digraph<Type>(){
         graph = new HashTable<Type>();
         arr = new AdjacencyList[MIN];
         // Set all values to NULL as default
@@ -27,7 +27,7 @@ public:
             arr[i].head = new AdjacencyListNode(" ", nullptr);
         }
     }
-    ~Graph<Type>(){
+    ~Digraph<Type>(){
         graph->~HashTable();
         delete [] arr;
     }
@@ -47,7 +47,7 @@ public:
         string name, name2, line;
         double data;
         int i = 0;
-        file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
+        file.open("AttackMap.txt");
         if (file.is_open()) {
             cout << "File Opened." << endl;
         }
@@ -62,7 +62,7 @@ public:
             i++;
         }
         file.close();
-        file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
+        file.open("AttackMapEdges.txt");
         if (file.is_open()) {
             cout << "File Opened." << endl;
         }

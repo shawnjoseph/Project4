@@ -9,16 +9,24 @@ class AdjacencyListNode {
 private:
     string name;
     double data;
+    Vertex<Data> *vertex;
 
 public:
     AdjacencyListNode *next;
 
-    AdjacencyListNode(string name, AdjacencyListNode *next) {
+    AdjacencyListNode(string name, Vertex<Data> *vertex, AdjacencyListNode *next) {
         this->name = name;
+        this->vertex = vertex;
         this->next = next;
+
     }
 
     string getName() const { return name; }
+
+
+    Vertex<Data> *getVertex() const {
+        return vertex;
+    }
 
     double getData() const { return data; }
 

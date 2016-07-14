@@ -1,0 +1,26 @@
+United_States China 297 
+United_States United_States 227
+China United_States 222 
+China Russia 135 
+China Vietnam 2 
+China India 12 
+China United_Arab_Emirates 97
+Netherlands Czech_Republic 13 
+Netherlands Spain 52 
+Netherlands Belgium 11
+Ukraine Switzerland 10
+India India 15
+Czech_Republic Netherlands 18
+Vietnam China 42 
+Vietnam Singapore 12
+Colombia United_States 1
+United_Arab_Emirates United_States 121 
+United_Arab_Emirates China 83 
+United_Arab_Emirates Russia 17
+Spain France 34 
+Spain Belgium 67 
+Spain Norway 2
+France Spain 18
+Philippines Singapore 3
+Norway Switzerland 31
+

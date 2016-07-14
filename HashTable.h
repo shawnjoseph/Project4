@@ -4,7 +4,7 @@
 using namespace std;
 
 template<class Data> class HashTable {
-    template <class Type> friend class Graph;
+    template <class Type> friend class Digraph;
 protected:
     // To be filled in later
     int tableSize;

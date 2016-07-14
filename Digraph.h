@@ -7,6 +7,7 @@
 #include "Edge.h"
 #include "HashTable.h"
 #include "AdjacencyList.h"
+#include "AdjacencyListNode.h"
 
 using namespace std;
 
@@ -15,38 +16,37 @@ const int MIN = 20;
 template<class Type>
 class Digraph {
 private:
-    HashTable<Type> *digraph;
-    // Is there a reason for numEdges being static?
-    //static int numEdges = 0;
+    HashTable<Type> *graph;
+    AdjacencyList *arr;
     int numEdges = 0;
-    AdjacencyList<Type> *arr;
 
 public:
-    //Call to digraph constructor creates HashTable and AdjacencyList
+    //Call to graph constructor creates HashTable and AdjacencyList
     Digraph<Type>() {
-        digraph = new HashTable<Type>();
-        arr = new AdjacencyList<Type>[MIN];
+        graph = new HashTable<Type>();
+        arr = new AdjacencyList[MIN];
         // Set all values to NULL as default
         for (int i = 0; i < MIN; i++) {
-            arr[i].head = new Vertex<Type>();
-            cout << i << " ";
+            arr[i].head = new AdjacencyListNode(" ", nullptr);
         }
     }
 
+
     ~Digraph<Type>() {
-        digraph->~HashTable();
+        graph->~HashTable();
         delete[] arr;
     }
 
+
     bool empty() {
-        if (digraph->numOfEntries == 0) {
+        if (graph->numOfEntries == 0) {
             cout << "Graph is empty." << endl;
-        }
-        else {
+        } else {
             cout << "Graph is not empty." << endl;
         }
-        return digraph->numOfEntries == 0;
+        return graph->numOfEntries == 0;
     }
+
 
     void buildGraph() {
         ifstream file;
@@ -61,82 +61,90 @@ public:
         }
 
         while (file >> name >> data) {
-            digraph->insertValue(name, data); //insertion into HashTable
+            graph->insertValue(name, data); //insertion into HashTable
             arr[i].head->setName(name); //insertion into AdjacencyList
             arr[i].head->setData(data); //insertion into AdjacencyList
-            cout << "ID: " << arr[i].head->getID() << " Name: " << arr[i].head->getName()
-            << " Data: " << arr[i].head->getData() << endl;
             i++;
         }
+
         file.close();
         file.open("AttackMapEdges.txt");
+
         if (file.is_open()) {
             cout << "File Opened." << endl;
-        }
-        else {
+        } else {
             cerr << "File could not be opened." << endl;
         }
+
         while (file >> name >> name2 >> data) {
-            cout << name << " " << name2 << " " << data << endl;
-            //Add edge
-            insert(name, name2, data);
+            insert(name, name2, data);            //Add edge and creates AdjacencyList
+        }
+        file.close();
+    }
+
+    //Add edge and creates AdjacencyList
+    void insert(string u, string v, double w) {
+        Vertex<Data> *vertex1;
+        Vertex<Data> *vertex2;
+        if (w <= 0 || w == numeric_limits<double>::infinity()) {
+            cerr << "Weight is invalid." << endl;
+        } else if (w > 0) {
+            int i = 0;
+            int j = 0;
+            while (arr[i].head->getName() != u) {
+                //retrieves location of u in AdjacencyList
+                i++;
+            }
+            while (arr[j].head->getName() != v) {
+                //retrieves location of v in AdjacencyList
+                j++;
+            }
+            AdjacencyListNode *ptr = arr[i].head->next;
+            if (ptr == NULL) {
+                arr[i].head->next = new AdjacencyListNode(arr[j].head->getName(), nullptr); //creates first nodes
+            } else {
+                while (ptr != NULL) {
+                    ptr = ptr->next;
+                }
+                ptr = new AdjacencyListNode(arr[j].head->getName(), nullptr); //creates all other nodes
+            }
+//            vertex1 = new Vertex(arr[i].head->getName(), arr[i].head->getData());
+//            vertex2 = new Vertex(arr[j].head->getName(), arr[j].head->getData());
+//            Edge(vertex1, vertex2, w);
+            numEdges++;
         }
     }
 
-    void clear() {
-
-    }
-
-    void reset() {
-
-    }
-
-    void del(string v) {
-
-    }
-
-    int indegree(string v) {
-        return 0;
-    }
-
-    int outdegree(string v) {
-        return 0;
-    }
-
-    int edgeCount() {
+    int indegree(string name) {
+        int degree = 0;
+        // Change MIN to actual amount in the list later
+        for(int i=0; i < MIN; i++) {
+            if(arr[i] != NULL) {
+                if(arr[i].head->getName() == name) {
+                    AdjacencyListNode *ptr = arr[i].head;
+                    while(ptr != NULL) {
+                        degree++;
+                        ptr = ptr->next;
+                    }
+                    return degree;
+                }
+            }
+        }
+        cout << "Could not find Vertex you specified" << endl;
         return 0;
     }
 
     double adjacent(string u, string v) {
-        return 0;
-    }
-
-    void depthFirstSearch(string v) {
-
-    }
-
-    void breadthFirstSearch(string v) {
-
-    }
-
-    void shortPath(string u, string v) {
-
-    }
-
-    double distance(string u, string v) {
-        return 0;
-    }
-
-    void insert(string u, string v, double w) {
-        if (w > 0 && w == numeric_limits<double>::infinity()) {
-            cerr << "Weight is invalid." << endl;
-        } else if (w == 0) {
-            Vertex<Data> *U;
-            Vertex<Data> *V;
-            U = digraph->search(u);
-            V = digraph->search(v);
-            Edge(U, V, w);
-            numEdges++;
+        for(int i=0; i < MIN; i++) {
+            if(arr[i] != NULL) {
+                if(arr[i].head->getName() == u) {
+                    if(arr[i].head->getVertex()->getEdges() != NULL) {
+                        for(int j=0; j < arr[i].head->getVertex()->getNumEdges(); j++) {
+                            
+                        }
+                    }
+                }
+            }
         }
     }
 };
