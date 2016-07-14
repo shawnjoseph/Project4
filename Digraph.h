@@ -138,13 +138,18 @@ public:
         for(int i=0; i < MIN; i++) {
             if(arr[i] != NULL) {
                 if(arr[i].head->getName() == u) {
-                    if(arr[i].head->getVertex()->getEdges() != NULL) {
-                        for(int j=0; j < arr[i].head->getVertex()->getNumEdges(); j++) {
-                            
+                    Vertex<Data> *vertex = arr[i].head->getVertex();
+                    if(vertex->getEdges() != NULL) {
+                        for(int j=0; j < vertex->getNumEdges(); j++) {
+                            if(vertex->getEdges()[i]->getEnd()->getName() == v) {
+                                return vertex->getEdges()[i]->getWeight();
+                            }
                         }
                     }
                 }
             }
         }
+        cout << "Edge could not be found for the two edges specified" << endl;
+        return 0;
     }
 };
