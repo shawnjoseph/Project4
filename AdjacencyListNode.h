@@ -7,32 +7,28 @@ using namespace std;
 
 class AdjacencyListNode {
 private:
-    string name;
-    double data;
     Vertex<Data> *vertex;
 
 public:
     AdjacencyListNode *next;
 
-    AdjacencyListNode(string name, Vertex<Data> *vertex, AdjacencyListNode *next) {
-        this->name = name;
+    AdjacencyListNode(Vertex<Data> *vertex, AdjacencyListNode *next) {
         this->vertex = vertex;
         this->next = next;
-
     }
 
-    string getName() const { return name; }
-
+    ~AdjacencyListNode() {
+//        while(this->next != NULL){
+//            AdjacencyListNode * tmp = this->next;
+//            this = tmp;
+//            delete tmp;
+//        }
+//        delete this;
+    }
 
     Vertex<Data> *getVertex() const {
         return vertex;
     }
-
-    double getData() const { return data; }
-
-    void setName(string name) { this->name = name; }
-
-    void setData(double data) { this->data = data; }
 
     AdjacencyListNode *getNext() const { return next; };
 

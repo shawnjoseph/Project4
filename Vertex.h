@@ -13,7 +13,7 @@ template<class Data>
 class Vertex {
 private:
     string name;
-    Data data;
+    double data;
     int id = 0;
     Edge **edges;
     int numEdges = 0;
@@ -29,7 +29,7 @@ public:
         }
     }
 
-    Vertex<Data>(string name, Data data) {
+    Vertex<Data>(string name, double data) {
         if (id >= MAX_ID) {
             cerr << "Max ID reached." << endl;
         } else {
@@ -73,7 +73,7 @@ public:
         return numEdges;
     }
 
-    Data &getData() {
+    Data getData() {
         return this->data;
     }
 

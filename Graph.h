@@ -12,22 +12,27 @@ using namespace std;
 
 const int MIN = 20;
 
-template <class Type> class Digraph {
+template<class Type>
+class Graph {
 private:
     HashTable<Type> * graph;
     AdjacencyList *arr;
+    int numEdges;
+    int numNodes;
 
 public:
     //Call to graph constructor creates HashTable and AdjacencyList
-    Digraph<Type>(){
+    Graph<Type>() {
         graph = new HashTable<Type>();
-        arr = new AdjacencyList[MIN];
+        arr = new AdjacencyList[MIN]();
         // Set all values to NULL as default
         for(int i = 0; i < MIN; i++){
-            arr[i].head = new AdjacencyListNode(" ", nullptr);
+            arr[i].head = new AdjacencyListNode(NULL, NULL);
         }
     }
-    ~Digraph<Type>(){
+
+    //Call to graph constructor deletes HashTable and AdjacencyList
+    ~Graph<Type>() {
         graph->~HashTable();
         delete [] arr;
     }
@@ -47,7 +52,7 @@ public:
         string name, name2, line;
         double data;
         int i = 0;
-        file.open("AttackMap.txt");
+        file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
         if (file.is_open()) {
             cout << "File Opened." << endl;
         }
@@ -56,13 +61,14 @@ public:
         }
 
         while(file >> name >> data){
+            Vertex<Data> *v = new Vertex<Data>(name, data);
             graph->insertValue(name,data); //insertion into HashTable
-            arr[i].head->setName(name); //insertion into AdjacencyList
-            arr[i].head->setData(data); //insertion into AdjacencyList
+            arr[i].head = new AdjacencyListNode(v, NULL); //insertion into AdjacencyList
             i++;
+            numNodes++;
         }
         file.close();
-        file.open("AttackMapEdges.txt");
+        file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
         if (file.is_open()) {
             cout << "File Opened." << endl;
         }
@@ -77,8 +83,6 @@ public:
 
     //Add edge and creates AdjacencyList
     void insert(string u, string v, double w){
-        Vertex<Data> *vertex1;
-        Vertex<Data> *vertex2;
         static int numEdges = 0;
         if(w <= 0 || w == numeric_limits<double>::infinity()){
             cerr << "Weight is invalid." << endl;
@@ -86,26 +90,85 @@ public:
         else if ( w > 0){
             int i = 0;
             int j = 0;
-            while (arr[i].head->getName() != u) { //retrieves location of u in AdjacencyList
+            while (arr[i].head->getVertex()->getName() != u) { //retrieves location of u in AdjacencyList
                 i++;
             }
-            while (arr[j].head->getName() != v) { //retrieves location of v in AdjacencyList
+            while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
                 j++;
             }
             AdjacencyListNode *ptr = arr[i].head->next;
             if (ptr == NULL) {
-                arr[i].head->next = new AdjacencyListNode(arr[j].head->getName(), nullptr); //creates first nodes
+                arr[i].head->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates first nodes
             }
             else {
                 while (ptr != NULL) {
                     ptr = ptr->next;
                 }
-                ptr = new AdjacencyListNode(arr[j].head->getName(), nullptr); //creates all other nodes
+                ptr = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates all other nodes
             }
-//            vertex1 = new Vertex(arr[i].head->getName(), arr[i].head->getData());
-//            vertex2 = new Vertex(arr[j].head->getName(), arr[j].head->getData());
-//            Edge(vertex1, vertex2, w);
+
+
             numEdges++;
         }
+    }
+
+    double adjacent(string u, string v) {
+        int i = 0;
+        int j = 0;
+        while (arr[i].head->getVertex()->getName() != u) { //retrieves location of u in AdjacencyList
+            i++;
+        }
+        while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
+            j++;
+        }
+
+    }
+
+    int edgeCount() { return numEdges; }
+
+    bool isConnected() {
+        for (int i = 0; i < numNodes; i++) {
+            if (arr[i].head->getNext() == NULL) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    int degree(string v) {
+        int degree = 0;
+        int i = 0;
+        while (arr[i].head->getVertex()->getName() != v) { //retrieves location of u in AdjacencyList
+            i++;
+        }
+        AdjacencyListNode *ptr = arr[i].head->getNext();
+        while (ptr != NULL) {
+            degree++;
+            ptr = ptr->next;
+        }
+        return degree;
+    }
+
+    void clear() {
+        graph->~HashTable();
+        delete[] arr;
+
+        graph = new HashTable<Type>();
+        arr = new AdjacencyList[MIN];
+        // Set all values to NULL as default
+        for (int i = 0; i < MIN; i++) {
+            arr[i].head = new AdjacencyListNode(NULL, nullptr);
+        }
+    }
+
+    void reset() { }
+
+    void del(string v) {
+//        int i = 0;
+//        while (arr[i].head->getVertex()->getName() != v) { //retrieves location of u in AdjacencyList
+//            i++;
+//        }
+//        arr[i].head->~AdjacencyListNode();
+        //fix adjacencylist
     }
 };
