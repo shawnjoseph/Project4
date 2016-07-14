@@ -83,7 +83,6 @@ public:
 
     //Add edge and creates AdjacencyList
     void insert(string u, string v, double w){
-        static int numEdges = 0;
         if(w <= 0 || w == numeric_limits<double>::infinity()){
             cerr << "Weight is invalid." << endl;
         }
