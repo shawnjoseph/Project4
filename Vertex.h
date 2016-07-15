@@ -5,6 +5,8 @@
 #include "Edge.h"
 #include "AdjacencyListNode.h"
 
+#define MIN 20
+
 using namespace std;
 
 const int MAX_ID = 1000;
@@ -15,7 +17,7 @@ private:
     string name;
     double data;
     int id = 0;
-    Edge **edges;
+    Edge *edges[MIN];
     int numEdges = 0;
 public:
     Vertex *next;
@@ -37,6 +39,9 @@ public:
             this->name = name;
             this->data = data;
             next = nullptr;
+        }
+        for (int i = 0; i < MIN; i++) {
+            edges[i] = new Edge(nullptr, nullptr, 0);
         }
     }
 

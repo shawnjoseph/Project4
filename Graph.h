@@ -10,7 +10,6 @@
 
 using namespace std;
 
-
 template<class Type>
 class Graph {
 private:
@@ -52,8 +51,8 @@ public:
         double data;
         int i = 0;
         // Uncomment this when Shawn is working on it.
-        //file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
-        file.open("AttackMap.txt");
+        file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
+//        file.open("AttackMap.txt");
 
         if (file.is_open()) {
             cout << "File Opened." << endl;
@@ -71,8 +70,8 @@ public:
         }
         file.close();
         // Uncomment this when Shawn is working on it.
-        //file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
-        file.open("AttackMapEdges.txt");
+        file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
+//        file.open("AttackMapEdges.txt");
 
         if (file.is_open()) {
             cout << "File Opened." << endl;
@@ -104,6 +103,9 @@ public:
                 AdjacencyListNode *ptr = arr[i].head->next;
                 if (ptr == NULL) {
                     arr[i].head->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates first nodes
+                    arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
+                    arr[j].head->getVertex()->addEdge(arr[j].head->getVertex(), arr[i].head->getVertex(), w);
+
                 }
                 else {
                     while (ptr != NULL) {
@@ -111,7 +113,8 @@ public:
                     }
                     ptr = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates all other nodes
                 }
-                numEdges++;
+                arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
+                arr[j].head->getVertex()->addEdge(arr[j].head->getVertex(), arr[i].head->getVertex(), w);
             } else {
                 cout << "arr[i].head is NULL, error" << endl;
             }
@@ -176,5 +179,17 @@ public:
 //        }
 //        arr[i].head->~AdjacencyListNode();
         //fix adjacencylist
+    }
+
+    void display() {
+        for (int i = 0; i < numNodes; i++) {
+            cout << "Adjacency List for vertex " << i << endl;
+            AdjacencyListNode *ptr = arr[i].head;
+            while (ptr) {
+                cout << ptr->getVertex()->getName() << " -> ";
+                ptr = ptr->next;
+            }
+            cout << " end" << endl;
+        }
     }
 };

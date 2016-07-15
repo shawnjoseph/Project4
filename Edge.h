@@ -21,6 +21,12 @@ public:
         this->destination = end;
     }
 
+    Edge() {
+        this->origin = nullptr;
+        this->destination = nullptr;
+        this->weight = 0;
+    }
+
     ~Edge(){
         this->origin = nullptr;
         this->destination = nullptr;
