@@ -6,7 +6,6 @@
 
 using namespace std;
 
-class AdjacencyListNode;
 
 class AdjacencyList {
 public:

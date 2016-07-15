@@ -1,6 +1,5 @@
 #pragma once
 
-#include "AdjacencyList.h"
 #include "Vertex.h"
 
 using namespace std;

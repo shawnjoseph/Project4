@@ -7,7 +7,6 @@
 #include "Edge.h"
 #include "HashTable.h"
 #include "AdjacencyList.h"
-#include "AdjacencyListNode.h"
 
 #define MIN 20
 
