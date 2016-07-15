@@ -95,11 +95,11 @@ public:
         file.close();
     }
 
-    void insert(string u, string v, double w){
-        if(w <= 0 || w == numeric_limits<double>::infinity()){
+    void insert(string u, string v, double w) {
+        if (w <= 0 || w == numeric_limits<double>::infinity()) {
             cerr << "Weight is invalid." << endl;
         }
-        else if ( w > 0){
+        else if (w > 0) {
             int i = 0;
             int j = 0;
             while (arr[i].head->getVertex()->getName() != u) { //retrieves location of u in AdjacencyList
@@ -108,7 +108,7 @@ public:
             while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
                 j++;
             }
-            if(arr[i].head != NULL) {
+            if (arr[i].head != NULL) {
                 AdjacencyListNode *ptr = arr[i].head->next;
                 if (ptr == NULL) {
                     arr[i].head->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates first nodes
@@ -131,9 +131,12 @@ public:
         int degree = 0;
         // Change MIN to actual amount in the list later
         for (int i = 0; i < MIN; i++) {
-            if (arr[i] != NULL) {
+            if (arr[i].head != NULL) {
                 if (arr[i].head->getVertex()->getName() == name) {
                     AdjacencyListNode *ptr = arr[i].head;
+
+                    // Not sure if while loop should terminate @ ptr = null or ptr->next = null
+                    // need to wait on insertion function correct implementation to find out
                     while (ptr != NULL) {
                         degree++;
                         ptr = ptr->next;
@@ -146,30 +149,63 @@ public:
         return 0;
     }
 
+//    double adjacent(string u, string v) {
+//        for (int i = 0; i < numNodes; i++) {
+//            if (arr[i].head != NULL) {
+//                if (arr[i].head->getVertex()->getName() == u) {
+//                    Vertex<Data> *vertex = arr[i].head->getVertex();
+//                    if (vertex->getEdges() != NULL) {
+//                        for (int j = 0; j < vertex->getNumEdges(); j++) {
+//                            if (vertex->getEdges()[i]->getEnd()->getName() == v) {
+//                                return vertex->getEdges()[i]->getWeight();
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        cout << "Edge could not be found for the two edges specified" << endl;
+//        return 0;
+//    }
+
     double adjacent(string u, string v) {
-        for (int i = 0; i < MIN; i++) {
-            if (arr[i] != NULL) {
-                if (arr[i].head->getVertex()->getName() == u) {
-                    Vertex<Data> *vertex = arr[i].head->getVertex();
-                    if (vertex->getEdges() != NULL) {
-                        for (int j = 0; j < vertex->getNumEdges(); j++) {
-                            if (vertex->getEdges()[i]->getEnd()->getName() == v) {
-                                return vertex->getEdges()[i]->getWeight();
-                            }
-                        }
-                    }
-                }
+        int i = 0;
+        while (arr[i].head->getVertex()->getName() != u) {
+            if (!arr[i].head) {
+                cout << "String u could NOT be found" << endl;
+                return 0;
             }
+            cout << "Searching for string u" << endl;
+            cout << arr[i].head->getVertex()->getName() << endl;
+            i++;
         }
-        cout << "Edge could not be found for the two edges specified" << endl;
-        return 0;
+
+        cout << "I is: " << i << endl;
+
+        cout << "Found string u" << endl;
+        Edge **edges = arr[i].head->getVertex()->getEdges();
+
+        int j = 0;
+        cout << "edges part: " << endl;
+        cout << edges[j]->getEnd() << endl;
+        while (edges[j]->getEnd()->getName() != v) {
+            if (edges[j] == NULL) {
+                cout << "String v could NOT be found" << endl;
+                return 0;
+            }
+            cout << "Searching for string v" << endl;
+            j++;
+        }
+        return edges[j]->getWeight();
+
+        cout << "Edge with these two criteria could not be found " << endl;
     }
 
     void display() {
-        for(int i=0; i < numNodes; i++) {
+        for (int i = 0; i < numNodes; i++) {
             cout << "Adjacency List for vertex " << i << endl;
             AdjacencyListNode *ptr = arr[i].head;
-            while(ptr) {
+            while (ptr) {
                 cout << ptr->getVertex()->getName() << " -> ";
                 ptr = ptr->next;
             }
