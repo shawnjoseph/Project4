@@ -104,28 +104,29 @@ public:
             while (arr[i].head->getVertex()->getName() != u) { //retrieves location of u in AdjacencyList
                 i++;
             }
+            AdjacencyListNode *ptr = arr[i].head;
             while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
                 j++;
             }
             if (arr[i].head != NULL) {
-                AdjacencyListNode *ptr = arr[i].head->next;
-                if (ptr == NULL) {
+                if (ptr->next == NULL) {
                     arr[i].head->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates first nodes
-                    arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
+                    arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(),
+                                                      w); //undirected edge
+
                 }
                 else {
-                    while (ptr != NULL) {
+                    while (ptr->next != NULL) {
                         ptr = ptr->next;
                     }
-                    ptr = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates all other nodes
+                    ptr->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates all other nodes
+                    arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
                 }
-                arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
             } else {
                 cout << "arr[i].head is NULL, error" << endl;
             }
         }
     }
-
 
     int indegree(string name) {
         int degree = 0;

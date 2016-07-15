@@ -96,42 +96,46 @@ public:
             while (arr[i].head->getVertex()->getName() != u) { //retrieves location of u in AdjacencyList
                 i++;
             }
+            AdjacencyListNode *ptr = arr[i].head;
             while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
                 j++;
             }
             if(arr[i].head != NULL) {
-                AdjacencyListNode *ptr = arr[i].head->next;
-                if (ptr == NULL) {
+                if (ptr->next == NULL) {
                     arr[i].head->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates first nodes
-                    arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
-                    arr[j].head->getVertex()->addEdge(arr[j].head->getVertex(), arr[i].head->getVertex(), w);
+                    arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(),
+                                                      w); //undirected edge
+                    arr[j].head->getVertex()->addEdge(arr[j].head->getVertex(), arr[i].head->getVertex(),
+                                                      w); //undirected edge
 
                 }
                 else {
-                    while (ptr != NULL) {
+                    while (ptr->next != NULL) {
                         ptr = ptr->next;
                     }
-                    ptr = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates all other nodes
+                    ptr->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates all other nodes
+                    arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
+                    arr[j].head->getVertex()->addEdge(arr[j].head->getVertex(), arr[i].head->getVertex(), w);
                 }
-                arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
-                arr[j].head->getVertex()->addEdge(arr[j].head->getVertex(), arr[i].head->getVertex(), w);
+//                arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
+//                arr[j].head->getVertex()->addEdge(arr[j].head->getVertex(), arr[i].head->getVertex(), w);
             } else {
                 cout << "arr[i].head is NULL, error" << endl;
             }
         }
     }
 
-    double adjacent(string u, string v) {
-        int i = 0;
-        int j = 0;
-        while (arr[i].head->getVertex()->getName() != u) { //retrieves location of u in AdjacencyList
-            i++;
-        }
-        while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
-            j++;
-        }
-
-    }
+//    double adjacent(string u, string v) {
+//        int i = 0;
+//        int j = 0;
+//        while (arr[i].head->getVertex()->getName() != u) { //retrieves location of u in AdjacencyList
+//            i++;
+//        }
+//        while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
+//            j++;
+//        }
+//
+//    }
 
     int edgeCount() { return numEdges; }
 
@@ -187,7 +191,7 @@ public:
             AdjacencyListNode *ptr = arr[i].head;
             while (ptr) {
                 cout << ptr->getVertex()->getName() << " -> ";
-                ptr = ptr->next;
+                ptr = ptr->getNext();
             }
             cout << " end" << endl;
         }
