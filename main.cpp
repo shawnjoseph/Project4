@@ -17,10 +17,13 @@ int main() {
 //    cout << "indegree: " << indegree << endl;
 
     cout << endl << "WHAT DAT BOOTY DO DOE MARK?????" << endl;
-//    for(int i = 0; i < 6; i++) {
     cout << endl;
-//    }
-//
+    diGraph->DFS("United_States");
+
+
+
+
+
 //    cout << "This is graph start" << endl;
 
 //    Graph<double> *graph = new Graph<double>(); //HashTable and AdjacencyList is built with type double

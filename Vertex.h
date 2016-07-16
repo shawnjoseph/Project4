@@ -11,9 +11,11 @@ using namespace std;
 
 const int MAX_ID = 1000;
 
+
 template<class Data>
 class Vertex {
 private:
+    static int newID;
     string name;
     double data;
     int id = 0;
@@ -83,8 +85,9 @@ public:
     }
 
     int generateID() {
-        static int newID = 0;
-
         return newID = ++newID;
     }
 };
+
+template <typename T>
+int Vertex<T>::newID = 0;
