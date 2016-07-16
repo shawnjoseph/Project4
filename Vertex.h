@@ -55,8 +55,8 @@ public:
     }
 
 
-    Edge **getEdges() const {
-        return edges;
+    Edge *getEdges() const {
+        return *edges;
     }
 
     int getID() {

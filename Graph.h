@@ -27,13 +27,17 @@ public:
         for(int i = 0; i < MIN; i++){
             arr[i].head = new AdjacencyListNode(NULL, NULL);
         }
+        numEdges = 0;
     }
 
     //Call to graph constructor deletes HashTable and AdjacencyList
     ~Graph<Type>() {
         graph->~HashTable();
         delete [] arr;
+        numEdges = 0;
     }
+
+    //Checks if graph is empty
     bool empty(){
         if(graph->numOfEntries == 0){
             cout << "Graph is empty." << endl;
@@ -43,8 +47,8 @@ public:
         }
         return graph->numOfEntries == 0;
     }
-    // Maybe take in 2 files: one for nodes and their data
-    // another for their edges and weights
+
+    //Reads in two files: One to create Vertices and HashTable, another to create Adjacency List and Edges
     void buildGraph(){
         ifstream file;
         string name, name2, line;
@@ -53,7 +57,6 @@ public:
         // Uncomment this when Shawn is working on it.
         file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
 //        file.open("AttackMap.txt");
-
         if (file.is_open()) {
             cout << "File Opened." << endl;
         }
@@ -100,14 +103,14 @@ public:
             while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
                 j++;
             }
-            if(arr[i].head != NULL) {
+            if (arr[i].head != NULL && arr[j].head != NULL) {
                 if (ptr->next == NULL) {
                     arr[i].head->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates first nodes
                     arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(),
                                                       w); //undirected edge
                     arr[j].head->getVertex()->addEdge(arr[j].head->getVertex(), arr[i].head->getVertex(),
                                                       w); //undirected edge
-
+                    numEdges++;
                 }
                 else {
                     while (ptr->next != NULL) {
@@ -116,26 +119,38 @@ public:
                     ptr->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates all other nodes
                     arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
                     arr[j].head->getVertex()->addEdge(arr[j].head->getVertex(), arr[i].head->getVertex(), w);
+                    numEdges++;
                 }
-//                arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
-//                arr[j].head->getVertex()->addEdge(arr[j].head->getVertex(), arr[i].head->getVertex(), w);
             } else {
-                cout << "arr[i].head is NULL, error" << endl;
+                cerr << "A vertex does not exist." << endl;
             }
         }
     }
 
-//    double adjacent(string u, string v) {
-//        int i = 0;
-//        int j = 0;
-//        while (arr[i].head->getVertex()->getName() != u) { //retrieves location of u in AdjacencyList
-//            i++;
-//        }
-//        while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
-//            j++;
-//        }
-//
-//    }
+    double adjacent(string u, string v) {
+        int i = 0;
+        int j = 0;
+        while (arr[i].head->getVertex()->getName() != u) { //retrieves location of u in AdjacencyList
+            i++;
+        }
+        while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
+            j++;
+        }
+        if (arr[i].head->getVertex()->getName() == arr[j].head->getVertex()->getName()) {
+            return 0;
+        }
+        else if (arr[i].head == NULL || arr[j].head == NULL) {
+            cerr << "One or more vertices may not exist." << endl;
+        }
+        else {
+            Edge *e = arr[i].head->getVertex()->getEdges();
+            int pos = 0;
+            while (e[pos].getEnd() != arr[j].head->getVertex()) {
+                pos++;
+            }
+            return e[pos].getWeight();
+        }
+    }
 
     int edgeCount() { return numEdges; }
 
@@ -187,8 +202,12 @@ public:
 
     void display() {
         for (int i = 0; i < numNodes; i++) {
-            cout << "Adjacency List for vertex " << i << endl;
             AdjacencyListNode *ptr = arr[i].head;
+            if (ptr->getVertex() == NULL) {
+                cerr << "Error: Graph is Empty." << endl;
+                break;
+            }
+            cout << "Adjacency List for vertex " << i << endl;
             while (ptr) {
                 cout << ptr->getVertex()->getName() << " -> ";
                 ptr = ptr->getNext();
