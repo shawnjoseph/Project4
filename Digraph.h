@@ -270,15 +270,10 @@ public:
     }
 
     void clear() {
-        for(int i=0; i < numNodes; i++) {
-            AdjacencyListNode *ptr = arr[i].head;
-            arr[i] = NULL;
-            while(ptr->next) {
-                AdjacencyListNode *temp = ptr;
-                ptr = ptr->next;
-                delete temp;
-            }
+        while(numNodes > 0) {
+            del(arr[numNodes-1].head->getVertex()->getName());
         }
+        cout << "List has been cleared" << endl;
     }
 
     int edgeCount() { return numEdges; }

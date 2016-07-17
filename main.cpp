@@ -19,8 +19,8 @@ int main() {
     cout << endl << "WHAT DAT BOOTY DO DOE MARK?????" << endl;
     cout << endl;
 //    diGraph->DFS("China");
-    diGraph->del("China");
-
+//    diGraph->del("China");
+    diGraph->clear();
 
 
 
