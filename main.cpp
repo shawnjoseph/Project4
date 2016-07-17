@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
 
-    cout << "This is diGraph start" << endl;
+//    cout << "This is diGraph start" << endl;
 //    Digraph<double> *diGraph = new Digraph<double>(); //HashTable and AdjacencyList is built with type double
 //    diGraph->buildGraph(); //Fill HashTable and AdjacencyList with Nodes and their data
 //    diGraph->display();
@@ -24,13 +24,11 @@ int main() {
 
 
 
-//    cout << "This is graph start" << endl;
+    cout << "This is graph start" << endl;
 
     Graph<double> *graph = new Graph<double>(); //HashTable and AdjacencyList is built with type double
     graph->buildGraph(); //Fill HashTable and AdjacencyList with Nodes and their data
 //    graph->display();
-//    cout << graph->edgeCount();
-    graph->clear();
-    graph->display();
+    graph->BFS("China");
     return 0;
 }

@@ -113,12 +113,12 @@ public:
             while (arr[j].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
                 j++;
             }
-            if (arr[i].head != NULL) {
+            if (arr[i].head != NULL && arr[j].head != NULL) {
                 if (ptr->next == NULL) {
                     arr[i].head->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates first nodes
                     arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(),
                                                       w); //undirected edge
-
+                    numEdges++;
                 }
                 else {
                     while (ptr->next != NULL) {
@@ -126,9 +126,10 @@ public:
                     }
                     ptr->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates all other nodes
                     arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
+                    numEdges++;
                 }
             } else {
-                cout << "arr[i].head is NULL, error" << endl;
+                cerr << "One or more vertices do not exist." << endl;
             }
         }
     }

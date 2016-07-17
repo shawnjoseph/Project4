@@ -1,6 +1,4 @@
-#ifndef PROJECT2_Queue_H
-#define PROJECT2_Queue_H
-
+#pragma once
 #include <iostream>
 
 using namespace std;
@@ -17,7 +15,7 @@ private:
 
 public:
     Queue() :
-            initialSize(13), count(0), arraySize(initialSize), ihead(-1), itail(-1) {
+            initialSize(20), count(0), arraySize(initialSize), ihead(-1), itail(-1) {
         array = new Type[initialSize];
     }
 
@@ -40,7 +38,6 @@ public:
             cerr << "Error. Queue is Empty." << endl;
         }
         else
-            cout << "Front: " << array[ihead] << endl;
             return array[ihead];
         }
 
@@ -181,9 +178,4 @@ public:
         }
         return counter;
     }
-
-
 };
-
-
-#endif //PROJECT2_Queue_H
