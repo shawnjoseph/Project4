@@ -51,11 +51,11 @@ public:
     }
 
     bool isEmpty() const {
-        if (count == 0) {
-            cout << "Yes. Stack is Empty.\n";
-        } else {
-            cout << "No. Stack is Not Empty.\n";
-        }
+//        if (count == 0) {
+//            cout << "Yes. Stack is Empty.\n";
+//        } else {
+//            cout << "No. Stack is Not Empty.\n";
+//        }
         return count == 0;
     }
 

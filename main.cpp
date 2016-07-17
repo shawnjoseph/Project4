@@ -7,18 +7,18 @@ using namespace std;
 int main() {
 
     cout << "This is diGraph start" << endl;
-//    Digraph<double> *diGraph = new Digraph<double>(); //HashTable and AdjacencyList is built with type double
-//    diGraph->buildGraph(); //Fill HashTable and AdjacencyList with Nodes and their data
-//    diGraph->display();
-//    double adjacent = diGraph->adjacent("China", "Singapore");
-//    cout << adjacent << endl;
+    Digraph<double> *diGraph = new Digraph<double>(); //HashTable and AdjacencyList is built with type double
+    diGraph->buildGraph(); //Fill HashTable and AdjacencyList with Nodes and their data
+    diGraph->display();
+    diGraph->adjacent("China", "United_States");
 
-//    int indegree = diGraph->indegree("United_States");
-//    cout << "indegree: " << indegree << endl;
+    diGraph->indegree("China");
+    diGraph->outdegree("China");
 
-//    cout << endl << "WHAT DAT BOOTY DO DOE MARK?????" << endl;
-//    cout << endl;
-//    diGraph->DFS("United_States");
+
+    cout << endl << "WHAT DAT BOOTY DO DOE MARK?????" << endl;
+    cout << endl;
+    diGraph->DFS("China");
 
 
 
@@ -26,11 +26,11 @@ int main() {
 
 //    cout << "This is graph start" << endl;
 
-    Graph<double> *graph = new Graph<double>(); //HashTable and AdjacencyList is built with type double
-    graph->buildGraph(); //Fill HashTable and AdjacencyList with Nodes and their data
+//    Graph<double> *graph = new Graph<double>(); //HashTable and AdjacencyList is built with type double
+//    graph->buildGraph(); //Fill HashTable and AdjacencyList with Nodes and their data
 //    graph->display();
 //    cout << graph->edgeCount();
-    graph->clear();
-    graph->display();
+//    graph->clear();
+//    graph->display();
     return 0;
 }

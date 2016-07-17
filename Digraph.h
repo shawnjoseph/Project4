@@ -118,7 +118,6 @@ public:
                     arr[i].head->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates first nodes
                     arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(),
                                                       w); //undirected edge
-
                 }
                 else {
                     while (ptr->next != NULL) {
@@ -126,6 +125,7 @@ public:
                     }
                     ptr->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr); //creates all other nodes
                     arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(), w);
+                    numEdges++;
                 }
             } else {
                 cout << "arr[i].head is NULL, error" << endl;
@@ -133,46 +133,62 @@ public:
         }
     }
 
-    int indegree(string name) {
+    int indegree(string v) {
         int degree = 0;
-        // Change MIN to actual amount in the list later
         for (int i = 0; i < numNodes; i++) {
             if (arr[i].head != NULL) {
-                if (arr[i].head->getVertex()->getName() == name) {
-                    AdjacencyListNode *ptr = arr[i].head;
-
-                    // Not sure if while loop should terminate @ ptr = null or ptr->next = null
-                    // need to wait on insertion function correct implementation to find out
-                    while (ptr != NULL) {
-                        degree++;
+                // starting at next because we don't want to count the actual
+                // node as an indegree itself
+                AdjacencyListNode *ptr = arr[i].head->getNext();
+                if(ptr) {
+                    while(ptr->next) {
+                        if(ptr->getVertex()->getName() == v) {
+                            degree++;
+                        }
                         ptr = ptr->next;
                     }
-                    return degree;
                 }
             }
         }
-        cout << "Could not find Vertex you specified" << endl;
+        if(degree == 0) {
+            cout << "Could not find Vertex you specified" << endl;
+            return 0;
+        } else {
+            cout << "Indegree of " << v << " is: " << degree << endl;
+            return degree;
+        }
+    }
+
+    int outdegree(string v) {
+        int degree = 0;
+        int i=0;
+        while((arr[i].head->getVertex()->getName()) != v && (i <= numNodes)) {
+            i++;
+        }
+        if(i > numNodes) {
+            cout << "Node specified could not be found. Terminating." << endl;
+            return 0;
+        }
+        AdjacencyListNode *ptr = arr[i].head;
+        while(ptr->next) {
+            degree++;
+            ptr = ptr->next;
+        }
+        cout << "Outdegree of " << arr[i].head->getVertex()->getName() << " is: " << degree << endl;
+
         return 0;
     }
 
-//    double adjacent(string u, string v) {
-//        for (int i = 0; i < numNodes; i++) {
-//            if (arr[i].head != NULL) {
-//                if (arr[i].head->getVertex()->getName() == u) {
-//                    Vertex<Data> *vertex = arr[i].head->getVertex();
-//                    if (vertex->getEdges() != NULL) {
-//                        for (int j = 0; j < vertex->getNumEdges(); j++) {
-//                            if (vertex->getEdges()[i]->getEnd()->getName() == v) {
-//                                return vertex->getEdges()[i]->getWeight();
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        cout << "Edge could not be found for the two edges specified" << endl;
-//        return 0;
-//    }
+    AdjacencyListNode *findNode(string v) {
+        int i = 0;
+        while (arr[i].head->getVertex()->getName() != v && i <= numNodes) {
+            i++;
+        }
+        if(i > numNodes)
+            return NULL;
+        AdjacencyListNode *node = arr[i].head;
+        return node;
+    }
 
     double adjacent(string u, string v) {
         int i = 0;
@@ -181,79 +197,59 @@ public:
                 cout << "String u could NOT be found" << endl;
                 return 0;
             }
-            cout << "Searching for string u" << endl;
             cout << arr[i].head->getVertex()->getName() << endl;
             i++;
         }
 
-        cout << "I is: " << i << endl;
-
-        cout << "Found string u" << endl;
-        Edge **edges = arr[i].head->getVertex()->getEdges();
+        Edge *edges = arr[i].head->getVertex()->getEdges();
 
         int j = 0;
-        cout << "edges part: " << endl;
-        cout << edges[j]->getEnd() << endl;
-        while (edges[j]->getEnd()->getName() != v) {
-            if (edges[j] == NULL) {
-                cout << "String v could NOT be found" << endl;
-                return 0;
-            }
+        while ((edges[j].getEnd()->getName() != v) && j < arr[i].head->getVertex()->getNumEdges()) {
             cout << "Searching for string v" << endl;
             j++;
         }
-        return edges[j]->getWeight();
-
-        cout << "Edge with these two criteria could not be found " << endl;
+        if (j > arr[i].head->getVertex()->getNumEdges()) {
+            cout << "String v could NOT be found" << endl;
+            return 0;
+        } else {
+            cout << "Weight between the vertexes " << u << " and " << v << " is: " << edges[j].getWeight() << endl;
+            return edges[j].getWeight();
+        }
     }
 
     void DFS(string v) {
-        // Getting node with this name
-        Vertex<Data> *vertex = NULL;
+        AdjacencyListNode *node = NULL;
         int start = 0;
         for(int i=0; i < numNodes; i++) {
             if(arr[i].head->getVertex()->getName() == v) {
-                vertex = arr[i].head->getVertex();
-                start = i;
+                node = arr[i].head;
                 break;
             }
         }
-        if(!vertex) {
+        if(!node) {
             cout << "Vertex with name specified not found. Terminating. " << endl;
             return;
         }
 
-        // Calling reset, but really it's just to make sure
-        // the visited values are actually false
-        reset();
-        Stack< Vertex<Data> * > *stack = new Stack< Vertex<Data> * >(numNodes);
-        stack->push(vertex);
+        Stack< AdjacencyListNode *> *stack = new Stack<AdjacencyListNode*>(numNodes);
+        stack->push(node);
         cout << "DFS: ";
+        visited[node->getVertex()->getID() - 1] = true;
         while(!stack->isEmpty()) {
-            Vertex<Data> *top = stack->top();
-            cout << top->getName() << " ";
+            AdjacencyListNode *top = stack->top();
+            cout << top->getVertex()->getName() << " -> ";
             stack->pop();
-            visited[top->getID()] = true;
-            int nodePos = 0;
-            AdjacencyListNode *ptr = arr[start].head;
+            visited[top->getVertex()->getID() - 1] = true;
+            AdjacencyListNode *ptr = arr[top->getVertex()->getID() - 1].head;
             while(ptr) {
-                if (!visited[ptr->getVertex()->getID()]) {
-                    stack->push(ptr->getVertex());
+                if (!visited[ptr->getVertex()->getID() - 1]) {
+                    visited[ptr->getVertex()->getID() - 1] = true;
+                    stack->push(ptr);
                 }
                 ptr = ptr->next;
             }
         }
-
-//        while (S is not empty) do
-//            u := pop S;
-//        if (not visited[u]) then
-//                    visited[u] := true;
-//        for each unvisited neighbour w of u
-//        push S, w;
-//        end if
-//            end while
-        cout << endl;
-        reset();
+        cout << "end" << endl;
     }
 
     void reset() {
@@ -274,9 +270,11 @@ public:
         }
     }
 
+    int edgeCount() { return numEdges; }
+
     void display() {
         for (int i = 0; i < numNodes; i++) {
-            cout << "Adjacency List for vertex " << i << endl;
+//            cout << "Adjacency List for vertex " << i << endl;
             AdjacencyListNode *ptr = arr[i].head;
             while (ptr) {
                 cout << ptr->getVertex()->getName() << " -> ";
