@@ -9,20 +9,19 @@ int main() {
     cout << "This is diGraph start" << endl;
     Digraph<double> *diGraph = new Digraph<double>(); //HashTable and AdjacencyList is built with type double
     diGraph->buildGraph(); //Fill HashTable and AdjacencyList with Nodes and their data
-    diGraph->display();
-    diGraph->adjacent("China", "United_States");
+//    diGraph->display();
+//    diGraph->adjacent("China", "United_States");
 
-    diGraph->indegree("China");
-    diGraph->outdegree("China");
+//    diGraph->indegree("China");
+//    diGraph->outdegree("China");
 
 
     cout << endl << "WHAT DAT BOOTY DO DOE MARK?????" << endl;
     cout << endl;
 //    diGraph->DFS("China");
 //    diGraph->del("China");
-    diGraph->clear();
-
-
+    diGraph->shortPath("China", "China");
+//    diGraph->distance("China", "China");
 
 //    cout << "This is graph start" << endl;
 
