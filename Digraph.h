@@ -190,6 +190,17 @@ public:
         return node;
     }
 
+    int findNodeIndex(string v) {
+        int i = 0;
+        while (arr[i].head->getVertex()->getName() != v && i <= numNodes) {
+            i++;
+        }
+        if(i > numNodes)
+            return -1;
+        else
+            return i;
+    }
+
     double adjacent(string u, string v) {
         int i = 0;
         while (arr[i].head->getVertex()->getName() != u) {
@@ -271,6 +282,38 @@ public:
     }
 
     int edgeCount() { return numEdges; }
+
+    void del(string v) {
+        // find node in adjacency list
+        int index = findNodeIndex(v);
+        if(index == -1) {
+            cout << "Node with specified criteria was not found. Terminating" << endl;
+        }
+        for(int i = index; i < numNodes; i++) {
+            arr[i] = arr[i+1];
+        }
+        // decrement numNodes
+        numNodes--;
+        // find every instance of it in other nodes lists and delete it
+        AdjacencyListNode *prev = NULL;
+        AdjacencyListNode *cur = NULL;
+        for(int i = 0; i < numNodes; i++) {
+            prev = arr[i].head;
+            cur = prev->next;
+            while(cur) {
+                if(cur->getVertex()->getName() == v) {
+                    // Node found in other nodes list
+                    prev->next = cur->next;
+                    AdjacencyListNode temp = *cur;
+                }
+                prev = cur;
+                cur = cur->next;
+            }
+        }
+
+        cout << "LIST AFTER DELETION" << endl;
+        display();
+    }
 
     void display() {
         for (int i = 0; i < numNodes; i++) {
