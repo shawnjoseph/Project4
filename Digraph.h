@@ -363,6 +363,7 @@ public:
             minHeap->insert(arr[i].head, i, numeric_limits<double>::infinity());
             cout << "done with insertion " << i << " on bottom" << endl;
         }
+        
         while(!minHeap->empty()) {
 
             // extract top node from min heap
