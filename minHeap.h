@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <cmath>
 #include <fstream>
@@ -26,11 +27,11 @@ public:
         }
     }
 
-    ~Heap() {
+    ~minHeap() {
         delete[] array;
     }
 
-    minHeapNode *getMax() { return array[1]; }
+    minHeapNode *getMin() { return array[1]; }
 
     int getSize() { return numElements; }
 

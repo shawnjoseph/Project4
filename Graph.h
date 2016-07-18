@@ -17,8 +17,8 @@ class Graph {
 private:
     HashTable<Type> * graph;
     AdjacencyList *arr;
-    int numEdges;
-    int numNodes;
+    int numEdges = 0;
+    int numNodes = 0;
     bool *visited = new bool[numNodes]();
 
 public:
