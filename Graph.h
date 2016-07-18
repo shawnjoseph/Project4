@@ -8,6 +8,8 @@
 #include "AdjacencyList.h"
 #include "Queue.h"
 #include "Stack.h"
+#include "MinHeap.h"
+
 #define MIN 20
 
 using namespace std;
@@ -392,7 +394,7 @@ public:
     }
 
     void MST(string v) {
-        minHeap *heap = new minHeap[numNodes];
+        MinHeap *heap = new MinHeap[numNodes];
 
     }
 };

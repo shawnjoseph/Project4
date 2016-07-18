@@ -12,7 +12,7 @@
 #include "AdjacencyList.h"
 #include "Stack.h"
 #include "Queue.h"
-#include "minHeap.h"
+#include "MinHeap.h"
 
 #define MIN 20
 
@@ -212,7 +212,7 @@ public:
             }
 //            cout << arr[i].head->getVertex()->getName() << endl;
             i++;
-            cout << "i is (after): " << i << endl;
+//            cout << "i is (after): " << i << endl;
 
         }
 
@@ -267,6 +267,48 @@ public:
         cout << "end" << endl;
     }
 
+    //prints out graph using Breadth-First Search
+    void BFS(string v) {
+        reset();
+        AdjacencyListNode *node = NULL;
+
+        int start = 0;
+        for (int i = 0; i < numNodes; i++) {
+            if (arr[i].head->getVertex()->getName() == v) {
+                node = arr[i].head;
+                break;
+            }
+        }
+        if (!node) {
+            cout << "Vertex with name specified not found. Terminating. " << endl;
+            return;
+        }
+
+        Queue<AdjacencyListNode *> *queue = new Queue<AdjacencyListNode *>(numNodes);
+        queue->enqueue(node);
+
+        cout << "BFS: ";
+        visited[node->getVertex()->getID() - 1] = true;
+
+        while (!queue->empty()) {
+            AdjacencyListNode *front = queue->front();
+            cout << front->getVertex()->getName() << " -> ";
+            queue->dequeue();
+            visited[front->getVertex()->getID() - 1] = true;
+
+            AdjacencyListNode *ptr = arr[front->getVertex()->getID() - 1].head;
+            while (ptr) {
+                if (!visited[ptr->getVertex()->getID() - 1]) {
+                    visited[ptr->getVertex()->getID() - 1] = true;
+                    queue->enqueue(ptr);
+                }
+                ptr = ptr->next;
+            }
+        }
+        cout << "end" << endl;
+        reset();
+    }
+
     int minDistance(double dist[], bool sptSet[]) {
         // Initialize min value
         double min = numeric_limits<double>::infinity();
@@ -285,53 +327,6 @@ public:
         }
     }
 
-    int shortPath(string u, string v) {
-//        int dist[numNodes];
-//        Heap *heap<Type> = new Heap<Type>();
-//
-//        for(int i = 0; i < numNodes; i++) {
-//            dist[i] = INT_MAX;
-//            heap->insert(i, dist[i]);
-//
-//        }
-
-        int srcIndex = findNodeIndex(u);
-        int destIndex = findNodeIndex(v);
-
-        if(srcIndex == -1) {
-            cout << "Couldn't find the node for string u" << endl;
-            throw std::invalid_argument("Illegal argument for string u.");
-        }
-        if(destIndex == -1) {
-            cout << "Couldn't find the node for string v" << endl;
-            throw std::invalid_argument("Illegal argument for string v.");
-        }
-
-        vector<int> minDistance((unsigned long) numNodes, INT_MAX);
-        minDistance[srcIndex] = 0;
-        set< pair<int,int> > activeVertices;
-        activeVertices.insert({0,srcIndex});
-
-        while (!activeVertices.empty()) {
-            int i = activeVertices.begin()->second;
-            if (i == destIndex)
-                return minDistance[i];
-            activeVertices.erase(activeVertices.begin());
-            for (int edge = 0; edge < arr[i].head->getVertex()->getNumEdges(); edge++) {
-                if (minDistance[edge] > minDistance[i] + adjacent(arr[i].head->getVertex()->getName(), arr[edge].head->getVertex()->getName())) {
-                    activeVertices.erase({minDistance[edge], (int) adjacent(arr[i].head->getVertex()->getName(), arr[edge].head->getVertex()->getName())});
-                    minDistance[edge] = minDistance[i] + (int) adjacent(arr[i].head->getVertex()->getName(), arr[edge].head->getVertex()->getName());
-                    activeVertices.insert({minDistance[edge], (int) adjacent(arr[i].head->getVertex()->getName(), arr[edge].head->getVertex()->getName())});
-                }
-            }
-        }
-        // Returning this at the end because I don't actually need a value,
-        // just needed to return something for recursiveness
-        for(int i=0; i < numNodes; i++) {
-            cout << minDistance[i] << endl;
-        }
-        return INT_MAX;
-    }
 
     bool isEdge(int src, int dest) {
         if (!arr[src].head) {
@@ -349,49 +344,58 @@ public:
         return false;
     }
 
-    double distance(string u, string v) {
+    void shortPath(string u, string v) {
+        // creating minHeap
+        MinHeap *minHeap = new MinHeap(numNodes);
+
+        // creating visited nodes array to loop over
+        MinHeapNode *visitedNodes = new MinHeapNode[numNodes]();
+        int keepTrack = 0;
+
+        // initialize by making source vertex distance 0
+        // all other vertices dist are infinity
+        minHeap->insert(findNode(u), findNodeIndex(u), 0);
+        cout << "done with insertion on top" << endl;
         int srcIndex = findNodeIndex(u);
-        cout << "srcIndex is: " << srcIndex << endl;
-        // distance array
-        double dist[numNodes];
-        // shortest path tree visited array
-        bool sptSet[numNodes];
-        for (int i = 0; i < numNodes; i++) {
-            sptSet[i] = false;
-            dist[i] = numeric_limits<double>::infinity();
+        for(int i=1; i < numNodes; i++) {
+            if(i == srcIndex)
+                continue;
+            minHeap->insert(arr[i].head, i, numeric_limits<double>::infinity());
+            cout << "done with insertion " << i << " on bottom" << endl;
         }
-//        cout << "initialized and set defaults for sptSet and dist" << endl;
-        dist[srcIndex] = 0;
-        for (int i = 0; i < numNodes; i++) {
-            // Pick the minimum distance vertex from the set of vertices not
-            // yet processed. u is always equal to src in first iteration.
-            int min = minDistance(dist, sptSet);
+        while(!minHeap->empty()) {
 
-            AdjacencyListNode *minNode = arr[min].head;
+            // extract top node from min heap
+            MinHeapNode *node = minHeap->delMin();
 
-//            cout << "min is: " << min << endl;
-//            cout << "min node is: " << minNode->getVertex()->getName() << endl;
-
-            // Mark the picked vertex as processed
-            sptSet[min] = true;
-            double weight;
-            // Update dist value of the adjacent vertices of the picked vertex.
-            for (int k = 0; k < numNodes; k++) {
-                weight = adjacent(minNode->getVertex()->getName(), arr[k].head->getVertex()->getName());
-                // Update dist[v] only if is not in sptSet, there is an edge from
-                // u to v, and total weight of path from src to  v through u is
-                // smaller than current value of dist[v]
-                if ((!sptSet[k]) && isEdge(min, k) && (dist[min] != numeric_limits<double>::infinity()) &&
-                    ((dist[min] + weight) < dist[k])) {
-                    cout << "if statement activated" << endl;
-                    dist[k] = dist[min] + weight;
+            // traverse adjacency list of vertex
+            AdjacencyListNode *adjNode = node->getNode();
+            AdjacencyListNode *ptr = adjNode->next;
+            MinHeapNode *minHeapPtr = minHeap->getNode(ptr->getVertex()->getName());
+            // for every vertex (ptr) in adjacency list:
+            // u = node; v = ptr in this case
+            while(ptr) {
+                if(minHeap->isHere(node)) {
+                    double tempWeight = adjacent(node->getNode()->getVertex()->getName(), ptr->getVertex()->getName());
+                    if(node->getWeight() > tempWeight) {
+                        minHeapPtr->setWeight(tempWeight);
+                    }
+                    visitedNodes[keepTrack++] = *minHeapPtr;
                 }
+                ptr = ptr->next;
+            }
+
+            // find whichever node we want
+            for(int i = 0; i < numNodes; i++) {
+                // printing all to debug
+                cout << visitedNodes[i].getNode()->getVertex()->getName() << endl;
             }
         }
 
-        cout << "Vertex   Distance from Source" << endl;
-        for (int i = 0; i < numNodes; i++)
-            cout << i << "\t\t" << dist[i] << endl;
+    }
+
+    double distance(string u, string v) {
+        return 0;
     }
 
     void reset() {
