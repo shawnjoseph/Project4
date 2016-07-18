@@ -100,7 +100,7 @@ public:
         int r = nodeIndex + 1;
         if (nodeIndex > 1) {
             if (nodeIndex % 2 == 0) { //Inside Left Tree
-                if (array[nodeIndex] < array[i]) {
+                if (array[nodeIndex]->getWeight() < array[i]->getWeight()) {
                     //If Left < Parent, Swap
                     minHeapNode *tmp = array[i];
                     array[i] = array[nodeIndex];
@@ -108,14 +108,14 @@ public:
                 }
             }
             if (nodeIndex % 2 != 0) { //Inside Right Tree
-                if (array[nodeIndex] < array[i]) {
+                if (array[nodeIndex]->getWeight() < array[i]->getWeight()) {
                     //If Right < Parent, Swap
                     minHeapNode *tmp = array[i];
                     array[i] = array[nodeIndex];
                     array[nodeIndex] = tmp;
                 }   //If Left > Right, Swap
                 if (array[l] != NULL) {
-                    if (array[l] > array[nodeIndex]) {
+                    if (array[l]->getWeight() > array[nodeIndex]->getWeight()) {
                         minHeapNode *tmp = array[l];
                         array[l] = array[nodeIndex];
                         array[nodeIndex] = tmp;
