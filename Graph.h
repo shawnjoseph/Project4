@@ -7,7 +7,7 @@
 #include "HashTable.h"
 #include "AdjacencyList.h"
 #include "Queue.h"
-
+#include "Stack.h"
 #define MIN 20
 
 using namespace std;
@@ -117,6 +117,7 @@ public:
                     arr[i].head->next = new AdjacencyListNode(arr[j].head->getVertex(), nullptr);
                     arr[i].head->getVertex()->addEdge(arr[i].head->getVertex(), arr[j].head->getVertex(),
                                                       w); //undirected edge
+                    numEdges++;
 
                     if (arr[j].head->next == NULL) {
                         arr[j].head->next = new AdjacencyListNode(arr[i].head->getVertex(),
@@ -274,38 +275,73 @@ public:
     }
 
     void BFS(string v) {
-        //Make sure all vertices are not visited
-//        reset();
-        //Find node with same name as string v
-        int i = 0;
-        int id;
-        while (arr[i].head->getVertex()->getName() != v) { //retrieves location of v in AdjacencyList
-            i++;
+        AdjacencyListNode *node = NULL;
+        int start = 0;
+        for (int i = 0; i < numNodes; i++) {
+            if (arr[i].head->getVertex()->getName() == v) {
+                node = arr[i].head;
+                break;
+            }
         }
-        id = arr[i].head->getVertex()->getID();
-        //Create Queue for Vertices
-        Queue<Vertex<Data> *> *queue = new Queue<Vertex<Data> *>;
-        visited[id] = true;
-        queue->enqueue(arr[i].head->getVertex());
+        if (!node) {
+            cout << "Vertex with name specified not found. Terminating. " << endl;
+            return;
+        }
 
+        Queue<AdjacencyListNode *> *queue = new Queue<AdjacencyListNode *>(numNodes);
+        queue->enqueue(node);
+        cout << "BFS: ";
+        visited[node->getVertex()->getID() - 1] = true;
         while (!queue->empty()) {
-            string name = queue->front()->getName();
-            cout << name << " ";
+            AdjacencyListNode *front = queue->front();
+            cout << front->getVertex()->getName() << " -> ";
             queue->dequeue();
-
-            AdjacencyListNode *ptr = arr[i].head; //pointer to starting node
-
-            // Get all adjacent vertices of the dequeued vertex
-            // If an adjacent has not been visited, then mark it visited
-            // and enqueue it
-            while (ptr->next != NULL) {
-                if (!visited[ptr->getVertex()->getID()]) {
-                    visited[ptr->getVertex()->getID()] = true;
-                    queue->enqueue(ptr->getVertex());
+            visited[front->getVertex()->getID() - 1] = true;
+            AdjacencyListNode *ptr = arr[front->getVertex()->getID() - 1].head;
+            while (ptr) {
+                if (!visited[ptr->getVertex()->getID() - 1]) {
+                    visited[ptr->getVertex()->getID() - 1] = true;
+                    queue->enqueue(ptr);
                 }
                 ptr = ptr->next;
             }
         }
+        cout << "end" << endl;
         reset();
+    }
+
+    void DFS(string v) {
+        AdjacencyListNode *node = NULL;
+        int start = 0;
+        for (int i = 0; i < numNodes; i++) {
+            if (arr[i].head->getVertex()->getName() == v) {
+                node = arr[i].head;
+                break;
+            }
+        }
+        if (!node) {
+            cout << "Vertex with name specified not found. Terminating. " << endl;
+            return;
+        }
+
+        Stack<AdjacencyListNode *> *stack = new Stack<AdjacencyListNode *>(numNodes);
+        stack->push(node);
+        cout << "DFS: ";
+        visited[node->getVertex()->getID() - 1] = true;
+        while (!stack->isEmpty()) {
+            AdjacencyListNode *top = stack->top();
+            cout << top->getVertex()->getName() << " -> ";
+            stack->pop();
+            visited[top->getVertex()->getID() - 1] = true;
+            AdjacencyListNode *ptr = arr[top->getVertex()->getID() - 1].head;
+            while (ptr) {
+                if (!visited[ptr->getVertex()->getID() - 1]) {
+                    visited[ptr->getVertex()->getID() - 1] = true;
+                    stack->push(ptr);
+                }
+                ptr = ptr->next;
+            }
+        }
+        cout << "end" << endl;
     }
 };
