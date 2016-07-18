@@ -67,7 +67,7 @@ void CommandProcessor::ProcessDirectedGraph(const string &cmd) {
         diGraph->insert(u, v, weight);
         cout << "Edge added" << endl;
     } else if (cmd == "Build Graph") {
-        diGraph->buildTree();
+        diGraph->buildGraph();
         cout << "The graph has been built." << endl;
     } else if (cmd == "Clear") {
         diGraph->clear();
@@ -90,7 +90,7 @@ void CommandProcessor::ProcessDirectedGraph(const string &cmd) {
         getline(cin, v);
         cout << "Outdegree of " << v << " is: " << diGraph->outdegree(v) << endl;
     } else if (cmd == "Edgecount") {
-        cout << "There are " << diGraph->numEdges << " edges in the graph." << endl;
+        cout << "There are " << diGraph->edgeCount() << " edges in the graph." << endl;
     } else if (cmd == "Adjacent") {
         string u, v;
         cout << "Enter name of start vertex: ";
@@ -99,9 +99,12 @@ void CommandProcessor::ProcessDirectedGraph(const string &cmd) {
         getline(cin, v);
         diGraph->adjacent(u, v);
     } else if (cmd == "Depth First Search") {
-        diGraph->DFS();
+        string v;
+        cout << "Enter name of start vertex: ";
+        getline(cin, v);
+        diGraph->DFS(v);
     } else if (cmd == "Breadth First Search") {
-        diGraph->BFS();
+//        diGraph->BFS();
     } else if (cmd == "Distance") {
         string u, v;
         cout << "Enter name of start vertex: ";
@@ -156,7 +159,7 @@ void CommandProcessor::ProcessUndirectedGraph(const string &cmd) {
         getline(cin, v);
         cout << "Degree of " << v << " is " << graph->degree(v) << endl;
     } else if (cmd == "Edge Count") {
-        cout << "There are " << graph->numEdges << " edges in the graph." << endl;
+        cout << "There are " << graph->edgeCount() << " edges in the graph." << endl;
     } else if (cmd == "Check Connection") {
         if (graph->isConnected()) {
             cout << "The graph is connected." << endl;
@@ -176,9 +179,15 @@ void CommandProcessor::ProcessUndirectedGraph(const string &cmd) {
     } else if (cmd == "Display") {
         graph->display();
     } else if (cmd == "Breadth-First Search") {
-        graph->BFS();
+        string v;
+        cout << "Enter name of start vertex: ";
+        getline(cin, v);
+        graph->BFS(v);
     } else if (cmd == "Depth-First Search") {
-        graph->DFS();
+        string v;
+        cout << "Enter name of start vertex: ";
+        getline(cin, v);
+        graph->DFS(v);
     } else if (cmd == "Find Minimum-Spanning Tree") {
     } else if (cmd == "Exit") {
         exit(0);

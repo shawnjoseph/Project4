@@ -101,7 +101,7 @@ public:
         return NULL;
     }
 
-    void insertValue(string name, Data data) {
+    void insertValue(string name, double data) {
         // Boolean to track whether the for loop found any data
         bool blankInsert = true;
         // Inserts a data into the hashmap

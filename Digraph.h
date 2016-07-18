@@ -5,13 +5,14 @@
 #include <fstream>
 #include <vector>
 #include <set>
+#include <climits>
 #include "Vertex.h"
 #include "Edge.h"
 #include "HashTable.h"
 #include "AdjacencyList.h"
 #include "Stack.h"
 #include "Queue.h"
-#include "Heap.h"
+#include "minHeap.h"
 
 #define MIN 20
 
@@ -156,7 +157,6 @@ public:
             cout << "Could not find Vertex you specified" << endl;
             return 0;
         } else {
-            cout << "Indegree of " << v << " is: " << degree << endl;
             return degree;
         }
     }
