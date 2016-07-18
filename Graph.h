@@ -16,7 +16,7 @@ template<class Type>
 class Graph {
 private:
     HashTable<Type> * graph;
-    AdjacencyList *arr;
+    AdjacencyList *arr;     //arr of adjacency list heads
     int numEdges = 0;
     int numNodes = 0;
     bool *visited = new bool[numNodes]();
@@ -24,7 +24,7 @@ private:
 public:
     //Call to graph constructor creates HashTable and AdjacencyList
     Graph<Type>() {
-        graph = new HashTable<Type>();
+        graph = new HashTable<Type>();      //HashTable stores Vertices and their values
         arr = new AdjacencyList[MIN]();
         // Set all values to NULL as default
         for(int i = 0; i < MIN; i++){
@@ -181,6 +181,7 @@ public:
         }
     }
 
+    //Checks if two nodes are adjacent and returns the weight of their shared edge if true
     double adjacent(string u, string v) {
         int i = 0;
         int j = 0;
@@ -191,7 +192,7 @@ public:
             j++;
         }
         if (arr[i].head->getVertex()->getName() == arr[j].head->getVertex()->getName()) {
-            return 0;
+            return 0;       //returns 0 if both strings are same vertex
         }
         else if (arr[i].head == NULL || arr[j].head == NULL) {
             cerr << "One or more vertices may not exist." << endl;
@@ -199,15 +200,17 @@ public:
         else {
             Edge *e = arr[i].head->getVertex()->getEdges();
             int pos = 0;
-            while (e[pos].getEnd() != arr[j].head->getVertex()) {
+            while (e[pos].getEnd() != arr[j].head->getVertex()) {       //finds corresponding vertex
                 pos++;
             }
             return e[pos].getWeight();
         }
     }
 
+    //return number of edges
     int edgeCount() { return numEdges; }
 
+    //Checks if graph is connected
     bool isConnected() {
         for (int i = 0; i < numNodes; i++) {
             if (arr[i].head->getNext() == NULL) {
@@ -217,6 +220,7 @@ public:
         return true;
     }
 
+    //Finds the number of edges attached to vertex v
     int degree(string v) {
         int degree = 0;
         int i = 0;
@@ -224,16 +228,20 @@ public:
             i++;
         }
         AdjacencyListNode *ptr = arr[i].head->getNext();
-        while (ptr != NULL) {
+        while (ptr != NULL) {       //traverses adjacency list of node, incrementing degree
             degree++;
             ptr = ptr->next;
         }
         return degree;
     }
 
+    //Clears graph
     void clear() {
         graph->~HashTable();
-        delete[] arr;
+        while (numNodes > 0) {
+            del(arr[numNodes - 1].head->getVertex()->getName());
+        }
+        cout << "List has been cleared" << endl;
 
         graph = new HashTable<Type>();
         arr = new AdjacencyList[MIN];
@@ -243,21 +251,49 @@ public:
         }
     }
 
+    //resets all vertex visited to false
     void reset() {
         for (int i = 0; i < numNodes; i++) {
             visited[i] = false;
         }
     }
 
+    //deletes a vertex and adjusts graph and adjacencylist
     void del(string v) {
+        // find node in adjacency list
         int i = 0;
-        while (arr[i].head->getVertex()->getName() != v) { //retrieves location of u in AdjacencyList
+        while (arr[i].head->getVertex()->getName() != v && i <= numNodes) {
             i++;
         }
-        arr[i].head->~AdjacencyListNode();
-        //fix adjacencylist
+        int index = i;
+
+        for (int i = index; i < numNodes; i++) {
+            arr[i] = arr[i + 1];
+        }
+        // decrement numNodes
+        numNodes--;
+        // find every instance of it in other nodes lists and delete it
+        AdjacencyListNode *prev = NULL;
+        AdjacencyListNode *cur = NULL;
+        for (int i = 0; i < numNodes; i++) {
+            prev = arr[i].head;
+            cur = prev->next;
+            while (cur) {
+                if (cur->getVertex()->getName() == v) {
+                    // Node found in other nodes list
+                    prev->next = cur->next;
+                    AdjacencyListNode temp = *cur;
+                }
+                prev = cur;
+                cur = cur->next;
+            }
+        }
+
+        cout << "LIST AFTER DELETION" << endl;
+        display();
     }
 
+    //prints out graph using adjacency list
     void display() {
         for (int i = 0; i < numNodes; i++) {
             AdjacencyListNode *ptr = arr[i].head;
@@ -274,8 +310,11 @@ public:
         }
     }
 
+    //prints out graph using Breadth-First Search
     void BFS(string v) {
+        reset();
         AdjacencyListNode *node = NULL;
+
         int start = 0;
         for (int i = 0; i < numNodes; i++) {
             if (arr[i].head->getVertex()->getName() == v) {
@@ -290,13 +329,16 @@ public:
 
         Queue<AdjacencyListNode *> *queue = new Queue<AdjacencyListNode *>(numNodes);
         queue->enqueue(node);
+
         cout << "BFS: ";
         visited[node->getVertex()->getID() - 1] = true;
+
         while (!queue->empty()) {
             AdjacencyListNode *front = queue->front();
             cout << front->getVertex()->getName() << " -> ";
             queue->dequeue();
             visited[front->getVertex()->getID() - 1] = true;
+
             AdjacencyListNode *ptr = arr[front->getVertex()->getID() - 1].head;
             while (ptr) {
                 if (!visited[ptr->getVertex()->getID() - 1]) {
@@ -310,7 +352,9 @@ public:
         reset();
     }
 
+    //prints out graph using Depth-First Search
     void DFS(string v) {
+        reset();
         AdjacencyListNode *node = NULL;
         int start = 0;
         for (int i = 0; i < numNodes; i++) {
