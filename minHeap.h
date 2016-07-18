@@ -131,7 +131,7 @@ public:
         }
     }
 
-    void delMax() {
+    void delMin() {
         if (numElements == capacity / 4) {
             halfSize();
         }
@@ -143,5 +143,16 @@ public:
         }
         numElements--; //Get rid of last element
 
+    }
+
+    void Display() {
+        if (empty()) {
+            cerr << "Heap is Empty." << endl;
+            return;
+        }
+        for (int i = 1; i <= numElements; i++) {
+            cout << array[i]->getNode()->getVertex()->getName() << ":" << array[i]->getWeight() << "   ";
+        }
+        cout << "\n";
     }
 };

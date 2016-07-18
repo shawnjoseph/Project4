@@ -212,11 +212,13 @@ public:
 
     //Checks if graph is connected
     bool isConnected() {
-        for (int i = 0; i < numNodes; i++) {
-            if (arr[i].head->getNext() == NULL) {
-                return false;
-            }
-        }
+//        DFS(arr[0].head->getVertex()->getName());
+
+//        for (int i = 0; i < numNodes; i++) {
+//            if (arr[i].head->getNext() == NULL) {
+//                return false;
+//            }
+//        }
         return true;
     }
 
@@ -387,5 +389,10 @@ public:
             }
         }
         cout << "end" << endl;
+    }
+
+    void MST(string v) {
+        minHeap *heap = new minHeap[numNodes];
+
     }
 };

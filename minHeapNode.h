@@ -14,8 +14,10 @@ public:
     minHeapNode(AdjacencyListNode *node, int index, double weight) {
         this->node = node;
         this->index = index;
-        this->weight = weight;
     }
+
+
+    AdjacencyListNode *getNode() const { return node; }
 
     double getWeight() { return weight; }
 
