@@ -349,48 +349,57 @@ public:
         MinHeap *minHeap = new MinHeap(numNodes);
 
         // creating visited nodes array to loop over
-        MinHeapNode *visitedNodes = new MinHeapNode[numNodes]();
+        MinHeapNode **visitedNodes = new MinHeapNode *[numNodes]();
         int keepTrack = 0;
 
         // initialize by making source vertex distance 0
         // all other vertices dist are infinity
         minHeap->insert(findNode(u), findNodeIndex(u), 0);
-        cout << "done with insertion on top" << endl;
+//        cout << "done with insertion on top" << endl;
         int srcIndex = findNodeIndex(u);
-        for(int i=1; i < numNodes; i++) {
-            if(i == srcIndex)
+        for (int i = 0; i < numNodes; i++) {
+            if (i == srcIndex)
                 continue;
             minHeap->insert(arr[i].head, i, numeric_limits<double>::infinity());
-            cout << "done with insertion " << i << " on bottom" << endl;
         }
-        
-        while(!minHeap->empty()) {
-
+        while (!minHeap->empty()) {
             // extract top node from min heap
             MinHeapNode *node = minHeap->delMin();
-
             // traverse adjacency list of vertex
-            AdjacencyListNode *adjNode = node->getNode();
-            AdjacencyListNode *ptr = adjNode->next;
-            MinHeapNode *minHeapPtr = minHeap->getNode(ptr->getVertex()->getName());
-            // for every vertex (ptr) in adjacency list:
-            // u = node; v = ptr in this case
-            while(ptr) {
-                if(minHeap->isHere(node)) {
-                    double tempWeight = adjacent(node->getNode()->getVertex()->getName(), ptr->getVertex()->getName());
-                    if(node->getWeight() > tempWeight) {
-                        minHeapPtr->setWeight(tempWeight);
+            AdjacencyListNode *ptr = arr[node->getIndex()].head;
+            if(!ptr) {
+                cout << "ptr is null " << endl;
+            } else {
+                cout << "get node done" << endl;
+                cout << "ptr vertex name" << endl;
+//                cout << minHeap->getNode(ptr->getVertex()->getName())->getNode()->getVertex()->getName() << endl;
+                MinHeapNode *minHeapPtr = minHeap->getNode(ptr->getVertex()->getName());
+                // for every vertex (ptr) in adjacency list:
+                // u = node; v = ptr in this case
+                cout << "While loop before" << endl;
+                while (ptr) {
+                    cout << "while loop" << endl;
+                    if (minHeap->isHere(node)) {
+                        cout << "min heap node is here" << endl;
+                        double tempWeight = adjacent(node->getNode()->getVertex()->getName(), ptr->getVertex()->getName());
+                        cout << "temp weight is:" << tempWeight << endl;
+                        if (node->getWeight() > tempWeight) {
+                            minHeapPtr->setWeight(tempWeight);
+                        }
+                        visitedNodes[keepTrack++] = minHeapPtr;
                     }
-                    visitedNodes[keepTrack++] = *minHeapPtr;
+                    cout << "bout to do ptr next" << endl;
+                    ptr = ptr->next;
+                    cout << "ptr is now: " << ptr->getVertex()->getName() << endl;
                 }
-                ptr = ptr->next;
+
             }
 
             // find whichever node we want
-            for(int i = 0; i < numNodes; i++) {
-                // printing all to debug
-                cout << visitedNodes[i].getNode()->getVertex()->getName() << endl;
-            }
+//            for (int i = 0; i < numNodes; i++) {
+//                // printing all to debug
+//                cout << visitedNodes[i].getNode()->getVertex()->getName() << endl;
+//            }
         }
 
     }

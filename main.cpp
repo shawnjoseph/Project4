@@ -20,13 +20,13 @@ int main() {
 //    cout << endl;
 //    diGraph->DFS("China");
 //    diGraph->del("China");
-    diGraph->display();
-    cout << endl;
-    cout << endl;
-    cout << endl;
-    cout << endl;
-    cout << endl;
-    diGraph->shortPath("Spain", "Belgium");
+//    diGraph->display();
+//    cout << endl;
+//    cout << endl;
+//    cout << endl;
+//    cout << endl;
+//    cout << endl;
+    diGraph->shortPath("China", "Belgium");
 //    diGraph->distance("China", "United_States");
 
 //    cout << "This is graph start" << endl;
