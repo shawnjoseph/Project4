@@ -1,6 +1,4 @@
-#ifndef PROJECT2_STACK_H
-#define PROJECT2_STACK_H
-
+#pragma once
 #include <iostream>
 #include <string>
 #include <stdexcept>
@@ -155,6 +153,3 @@ public:
 
 
 };
-
-
-#endif //PROJECT2_STACK_H

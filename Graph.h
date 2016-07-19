@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include <limits>
 #include <fstream>
@@ -60,8 +59,8 @@ public:
         double data;
         int i = 0;
         // Uncomment this when Shawn is working on it.
-        file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
-//        file.open("AttackMap.txt");
+//        file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
+        file.open("AttackMap.txt");
         if (file.is_open()) {
             cout << "File Opened." << endl;
         }
@@ -78,8 +77,8 @@ public:
         }
         file.close();
         // Uncomment this when Shawn is working on it.
-        file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
-//        file.open("AttackMapEdges.txt");
+//        file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
+        file.open("AttackMapEdges.txt");
 
         if (file.is_open()) {
             cout << "File Opened." << endl;
@@ -394,7 +393,27 @@ public:
     }
 
     void MST(string v) {
+        int i = 0;
+        while (arr[i].head->getVertex()->getName() != v) {
+            i++;
+        }
         MinHeap *heap = new MinHeap[numNodes];
 
+        for (int j = 1; j < numNodes; i++) {
+            heap->array[j] = new MinHeapNode(nullptr, 0);
+            heap->array[j]->setWeight(numeric_limits<double>::infinity());
+        }
+        heap->array[0] = new MinHeapNode(arr[i].head, 0);
+        heap->insert(arr[i].head, 0);
+
+        while (!heap->empty()) {
+            MinHeapNode *minNode = heap->delMin();
+            int u = minNode->getIndex();
+
+            AdjacencyListNode *ptr = arr[u].head;
+            while (ptr != NULL) {
+                int destination;
+            }
+        }
     }
 };
