@@ -189,6 +189,10 @@ void CommandProcessor::ProcessUndirectedGraph(const string &cmd) {
         getline(cin, v);
         graph->DFS(v);
     } else if (cmd == "Find Minimum-Spanning Tree") {
+        string v;
+        cout << "Enter name of start vertex: ";
+        getline(cin, v);
+        graph->MST(v);
     } else if (cmd == "Exit") {
         exit(0);
     } else {

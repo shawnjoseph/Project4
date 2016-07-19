@@ -7,9 +7,10 @@ using namespace std;
 
 int main() {
 
+    CommandProcessor::Process_Commands();
 //    cout << "This is diGraph start" << endl;
-    Digraph<double> *diGraph = new Digraph<double>(); //HashTable and AdjacencyList is built with type double
-    diGraph->buildGraph(); //Fill HashTable and AdjacencyList with Nodes and their data
+//    Digraph<double> *diGraph = new Digraph<double>(); //HashTable and AdjacencyList is built with type double
+//    diGraph->buildGraph(); //Fill HashTable and AdjacencyList with Nodes and their data
 //    diGraph->display();
 //    diGraph->adjacent("China", "United_States");
 
@@ -21,13 +22,13 @@ int main() {
 //    cout << endl;
 //    diGraph->DFS("China");
 //    diGraph->del("China");
-    diGraph->display();
-    cout << endl;
-    cout << endl;
-    cout << endl;
-    cout << endl;
-    cout << endl;
-    diGraph->shortPath("Spain", "Belgium");
+//    diGraph->display();
+//    cout << endl;
+//    cout << endl;
+//    cout << endl;
+//    cout << endl;
+//    cout << endl;
+//    diGraph->shortPath("Spain", "Belgium");
 //    diGraph->distance("China", "United_States");
 
 //    cout << "This is graph start" << endl;

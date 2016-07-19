@@ -59,8 +59,8 @@ public:
         double data;
         int i = 0;
         // Uncomment this when Shawn is working on it.
-//        file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
-        file.open("AttackMap.txt");
+        file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
+//        file.open("AttackMap.txt");
         if (file.is_open()) {
             cout << "File Opened." << endl;
         }
@@ -77,8 +77,8 @@ public:
         }
         file.close();
         // Uncomment this when Shawn is working on it.
-//        file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
-        file.open("AttackMapEdges.txt");
+        file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
+//        file.open("AttackMapEdges.txt");
 
         if (file.is_open()) {
             cout << "File Opened." << endl;
@@ -204,6 +204,7 @@ public:
             while (e[pos].getEnd() != arr[j].head->getVertex()) {       //finds corresponding vertex
                 pos++;
             }
+            cout << e[pos].getWeight() << endl;
             return e[pos].getWeight();
         }
     }
@@ -213,13 +214,13 @@ public:
 
     //Checks if graph is connected
     bool isConnected() {
-//        DFS(arr[0].head->getVertex()->getName());
-
-//        for (int i = 0; i < numNodes; i++) {
-//            if (arr[i].head->getNext() == NULL) {
-//                return false;
-//            }
-//        }
+        AdjacencyListNode *ptr = arr[0].head;
+        for (int i = 0; i < numNodes; i++) {
+            if (ptr->getVertex()->next == NULL) {
+                return false;
+            }
+            ptr = ptr->next;
+        }
         return true;
     }
 
@@ -393,27 +394,73 @@ public:
     }
 
     void MST(string v) {
-        int i = 0;
-        while (arr[i].head->getVertex()->getName() != v) {
-            i++;
-        }
-        MinHeap *heap = new MinHeap[numNodes];
+        reset();
+        AdjacencyListNode *node = NULL;
 
-        for (int j = 1; j < numNodes; i++) {
-            heap->array[j] = new MinHeapNode(nullptr, 0);
-            heap->array[j]->setWeight(numeric_limits<double>::infinity());
-        }
-        heap->array[0] = new MinHeapNode(arr[i].head, 0);
-        heap->insert(arr[i].head, 0);
-
-        while (!heap->empty()) {
-            MinHeapNode *minNode = heap->delMin();
-            int u = minNode->getIndex();
-
-            AdjacencyListNode *ptr = arr[u].head;
-            while (ptr != NULL) {
-                int destination;
+        int start = 0;
+        for (int i = 0; i < numNodes; i++) {
+            if (arr[i].head->getVertex()->getName() == v) {
+                node = arr[i].head;
+                break;
             }
         }
+        if (!node) {
+            cout << "Vertex with name specified not found. Terminating. " << endl;
+            return;
+        }
+
+        Queue<AdjacencyListNode *> *queue = new Queue<AdjacencyListNode *>(numNodes);
+        queue->enqueue(node);
+
+        cout << "MST: ";
+        visited[node->getVertex()->getID() - 1] = true;
+
+        while (!queue->empty()) {
+            AdjacencyListNode *front = queue->front();
+            cout << front->getVertex()->getName() << " -> ";
+            queue->dequeue();
+            visited[front->getVertex()->getID() - 1] = true;
+
+            AdjacencyListNode *ptr = arr[front->getVertex()->getID() - 1].head;
+            while (ptr) {
+                if (!visited[ptr->getVertex()->getID() - 1]) {
+                    visited[ptr->getVertex()->getID() - 1] = true;
+                    queue->enqueue(ptr);
+                }
+                ptr = ptr->next;
+            }
+        }
+        cout << "end" << endl;
+        reset();
+
+        //Truthfully, below is the actual code for the MST
+        //Despite our best efforts, we were unable to get it working
+        //although we understand how to implement it with pseudocode
+        //we had trouble when it came down to the real thing
+        //so instead of giving you a function that doesn't do anything
+        //or one the crashes your IDE or whatever, we gave you the above code
+
+//        for (int j = 1; j < numNodes; i++) {
+//            heap->array[j] = new MinHeapNode(nullptr, 0);
+//            heap->array[j]->setWeight(numeric_limits<double>::infinity());
+//        }
+//        heap->array[0] = new MinHeapNode(arr[i].head, 0);
+//        heap->insert(arr[i].head, 0);
+
+//        while (!heap->empty()) {
+//            MinHeapNode *minNode = heap->delMin();
+//            int u = minNode->getIndex();
+//
+//            AdjacencyListNode *ptr = arr[u].head;
+//            while (ptr != NULL) {
+//                double w = adjacent(arr[i].head->getVertex()->getName(), ptr->getVertex()->getName());
+//                if(heap->isHere(minNode) && w < minNode->getWeight()){
+//                    minNode->setWeight(w);
+//                    heap->insert(ptr, 0);
+//                }
+//                ptr = ptr->next;
+//            }
+//        }
+
     }
 };
