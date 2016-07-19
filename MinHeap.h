@@ -127,19 +127,19 @@ public:
     }
 
     bool isHere(MinHeapNode *node) {
-        cout << "is here started, num elements is: " << numElements << endl;
+//        cout << "is here started, num elements is: " << numElements << endl;
         for(int i = 1; i < numElements-1; i++) {
-            cout << "array name is: ";
-            cout << array[i]->getNode()->getVertex()->getName() << endl;
-            cout << "node name is: ";
-            cout << node->getNode()->getVertex()->getName() << endl;
+//            cout << "array name is: ";
+//            cout << array[i]->getNode()->getVertex()->getName() << endl;
+//            cout << "node name is: ";
+//            cout << node->getNode()->getVertex()->getName() << endl;
 
             if(array[i]->getNode()->getVertex()->getName() == node->getNode()->getVertex()->getName()) {
-                cout << "Is here" << endl;
+//                cout << "Is here" << endl;
                 return true;
             }
         }
-        cout << "Is NOT here " << endl;
+//        cout << "Is NOT here " << endl;
         return false;
     }
 
@@ -148,11 +148,10 @@ public:
 //            cout << "i is: " << i << endl;
 //            cout << "array at this elements name is: " << array[i]->getNode()->getVertex()->getName() << endl;
 //            cout << "node name is: " << nodeName << endl;
-            cout << "i is " << i << endl;
+//            cout << "i is " << i << endl;
             if(array[i]->getNode()) {
                 if (array[i]->getNode()->getVertex()->getName() == nodeName) {
                     cout << "if statement activated" << endl;
-
                     return array[i];
                 }
             }
@@ -204,6 +203,9 @@ public:
 //            halfSize();
 //        }
         MinHeapNode *topNode = array[1];
+//        for(int i=1; i < numElements; i++) {
+//            cout << array[i]->getNode()->getVertex()->getName() << endl;
+//        }
         array[1] = array[numElements]; //Replaces first element with last
         int counter = numElements;
         while (counter > 0) {

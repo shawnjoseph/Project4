@@ -61,8 +61,8 @@ public:
         double data;
         int i = 0;
         // Uncomment this when Shawn is working on it.
-        file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
-//        file.open("AttackMap.txt");
+//        file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
+        file.open("AttackMap.txt");
 
         if (file.is_open()) {
             cout << "File Opened." << endl;
@@ -82,8 +82,8 @@ public:
 
 
         // Uncomment this when Shawn is working on it.
-        file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
-//        file.open("AttackMapEdges.txt");
+//        file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
+        file.open("AttackMapEdges.txt");
 
         if (file.is_open()) {
             cout << "File Opened." << endl;
@@ -338,7 +338,6 @@ public:
             }
             ptr = ptr->next;
         }
-
         return false;
     }
 
@@ -366,38 +365,38 @@ public:
             // traverse adjacency list of vertex
             AdjacencyListNode *ptr = arr[node->getIndex()].head;
             if(!ptr) {
-                cout << "ptr is null " << endl;
+//                cout << "ptr is null " << endl;
             } else {
-                cout << "get node done" << endl;
-                cout << "ptr vertex name" << endl;
+//                cout << "get node done" << endl;
+//                cout << "ptr vertex name" << endl;
 //                cout << minHeap->getNode(ptr->getVertex()->getName())->getNode()->getVertex()->getName() << endl;
                 MinHeapNode *minHeapPtr = minHeap->getNode(ptr->getVertex()->getName());
                 // for every vertex (ptr) in adjacency list:
                 // u = node; v = ptr in this case
-                cout << "While loop before" << endl;
-                while (ptr) {
-                    cout << "while loop" << endl;
+//                cout << "While loop before" << endl;
+                while (ptr->next) {
                     if (minHeap->isHere(node)) {
-                        cout << "min heap node is here" << endl;
+//                        cout << "min heap node is here" << endl;
                         double tempWeight = adjacent(node->getNode()->getVertex()->getName(), ptr->getVertex()->getName());
-                        cout << "temp weight is:" << tempWeight << endl;
+//                        cout << "temp weight is:" << tempWeight << endl;
                         if (node->getWeight() > tempWeight) {
                             minHeapPtr->setWeight(tempWeight);
                         }
                         visitedNodes[keepTrack++] = minHeapPtr;
                     }
-                    cout << "bout to do ptr next" << endl;
+//                    cout << "bout to do ptr next" << endl;
                     ptr = ptr->next;
-                    cout << "ptr is now: " << ptr->getVertex()->getName() << endl;
+//                    cout << "ptr is now: " << ptr->getVertex()->getName() << endl;
                 }
 
             }
-
-            // find whichever node we want
-//            for (int i = 0; i < numNodes; i++) {
-//                // printing all to debug
-//                cout << visitedNodes[i].getNode()->getVertex()->getName() << endl;
-//            }
+        }
+        // find whichever node we want
+        cout << "keep track is " << keepTrack << endl;
+        for (int i = 0; i < keepTrack; i++) {
+            // printing all to debug
+            cout << "printing to debug" << endl;
+            cout << visitedNodes[i]->getNode()->getVertex()->getName() << endl;
         }
 
     }
