@@ -1,6 +1,7 @@
 #include <iostream>
-#include "Graph.h"
-#include "Digraph.h"
+#include "CommandProcessor.h"
+//#include "Graph.h"
+//#include "Digraph.h"
 
 using namespace std;
 

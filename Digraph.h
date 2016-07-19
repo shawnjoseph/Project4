@@ -1,5 +1,3 @@
-#pragma once
-
 #include <iostream>
 #include <limits>
 #include <fstream>
@@ -63,8 +61,8 @@ public:
         double data;
         int i = 0;
         // Uncomment this when Shawn is working on it.
-//        file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
-        file.open("AttackMap.txt");
+        file.open("/home/randomguy/ClionProjects/Project4/AttackMap.txt");
+//        file.open("AttackMap.txt");
 
         if (file.is_open()) {
             cout << "File Opened." << endl;
@@ -84,8 +82,8 @@ public:
 
 
         // Uncomment this when Shawn is working on it.
-//        file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
-        file.open("AttackMapEdges.txt");
+        file.open("/home/randomguy/ClionProjects/Project4/AttackMapEdges.txt");
+//        file.open("AttackMapEdges.txt");
 
         if (file.is_open()) {
             cout << "File Opened." << endl;
